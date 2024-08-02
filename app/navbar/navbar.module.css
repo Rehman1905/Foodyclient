@@ -1,0 +1,161 @@
+@keyframes slideIn {
+    from {
+      transform: translateX(-80%);
+    }
+    to {
+      transform: translateX(0); 
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%); 
+    }
+  }
+  @keyframes slideLeft {
+    from {
+      transform: translateX(-160%);
+    }
+    to {
+      transform: translateX(0%); 
+    }
+  }
+  @keyframes slideLeftOut {
+    from {
+      transform: translateX(0%); 
+    }
+    to {
+      transform: translateX(-350%); 
+    }
+  }
+  .loginHead{
+    background-color: #EB5757;
+  }
+  .loginHead h2,.loginHead span{
+    color: #FFF;
+  }
+
+.responsiveDiv{
+    position: absolute;
+    top: 0;
+    left: 0;
+    flex-direction: column-reverse;
+    background-color: #FFF;
+    width: 80%;
+    padding-top: 80px;
+    gap: 30px;
+    height: 100vh;
+}
+.slideIn {
+    animation: slideIn 0.75s ease-in-out forwards; 
+}
+  
+  .slideOut {
+    animation: slideOut 0.75s ease-in-out forwards;
+  }
+  .slideLeft {
+    animation: slideLeft 0.75s ease-in-out forwards; 
+}
+  
+  .slideLeftOut {
+    animation: slideLeftOut 0.75s ease-in-out forwards;
+  }
+
+.responsiveLink{
+    display: flex;
+    flex-direction: column;
+}
+.mainDiv{
+    display: flex;
+    align-items: center;
+    width: 71%;
+    justify-content: space-between;
+}
+
+.btnDiv{
+    width: 40%;
+}
+.exit{
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+.exit:hover{
+    transform: scale(0.9);
+}
+.gray{
+    top: 0;
+    height: 100vh;
+    width: 30%;
+    right: 0;
+    position: absolute;
+    background-color: gray; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.burgerMenu{
+    margin-right: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.burgerMenu:hover{
+    transform: scale(0.9);
+}
+
+.avatar{
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.avatar p{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 25px;
+  color: #FFF;
+  background-color: #F178B6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.user{
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: absolute;
+  background-color: #FFF;
+  padding: 10px;
+  right: 15px;
+  width: 15%;
+  border-radius: 10px;
+  top: 80px;
+ 
+  animation: slideDown 0.5s ease-out forwards; 
+}
+.user a{
+  text-decoration: none;
+  font-size: 25px;
+  color: #636060;
+  padding: 5px;
+}
+.user hr{
+  color: #F3F4F6;
+}
+.user a:hover{
+  background-color: rgb(245, 238, 238);
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

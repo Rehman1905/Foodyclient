@@ -1,0 +1,341 @@
+.basket{
+    padding-top: 100px;
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 200px;
+}
+.resDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.resDiv img{
+    width: 80%;
+    height: 200px;
+    margin: 0 auto;
+}
+.resInfo{
+    display: flex;
+    justify-content: space-between;
+}
+.resNameDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.resNameDiv h2{
+    color: #4F4F4F;
+    font-size: 25px;
+}
+.resNameDiv p{
+    font-size: 20px;
+    font-size: #828282;
+}
+.resCuisineDiv{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+.cuisine{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.cuisine h3{
+    color: #828282;
+    font-size: 25px;
+}
+.cuisine p{
+    color: #828282;
+    font-size: 20px;
+}
+.btn{
+    display: flex;
+    gap: 10px;
+}
+.btn button{
+    cursor: pointer;
+    width: 50%;
+    border-radius: 10px;
+    font-size: 25px;
+}
+.delivery{
+    background-color: #FFF;
+    color: #D63626;
+    border: 1px solid #D63626;
+}
+.delivery:hover{
+    background-color: #e0dddd;
+}
+.back{
+    background-color: #D63626;
+    color: #FFF;
+    border: 1px solid #D63626;
+}
+.back:hover{
+    background-color: #b82f23;
+    border: 1px solid #b82f23;
+}
+.spin{
+    padding-top: 100px;
+    margin: 0 auto;
+    margin-bottom: 100px;
+    height: 500px;
+    width: 500px;
+}
+.basketDiv{
+    display: flex;
+    justify-content:space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+.basketProduct{
+    padding: 10px;
+    border-radius: 10px;
+    width: 65%;
+    background-color: #F3F4F6;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.basketProduct h2{
+    font-size: 30px;
+    color: #4F4F4F;
+    margin: 0 auto;
+}
+.productApi{
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.productInfo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.productInfo div{
+    display: flex;
+    flex-direction: column;
+}
+.productInfo h4{
+    color: #4F4F4F;
+    font-size: 25px;
+}
+.productInfo p{
+    font-size: 20px;
+    color: #828282;
+}
+.productAdd{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.productAdd img{
+    padding: 5px;
+    border: 2px solid 
+    #BDBDBD;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.orderDiv{
+    width: 30%;
+    background-color:#F3F4F6;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 78vh;
+    overflow-y: auto;
+}
+.orderDiv::-webkit-scrollbar {
+    width: 12px; 
+  }
+  
+  .orderDiv::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+  
+  .orderDiv::-webkit-scrollbar-thumb {
+    background-color: red; 
+    border-radius: 10px; 
+    border: 3px solid #f1f1f1; 
+  }
+.emptyBasket{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.itemDiv{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+.itemDiv p{
+    font-size: 20px;
+}
+.opps{
+    color: #BDBDBD;
+    font-size: 40px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    width: 60%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.deActiveBtn{
+    background-color: #BDBDBD;
+    border-radius: 20px;
+    padding: 10px;
+    border: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+    color: #FFF;
+    cursor: pointer;
+}
+.deActiveBtn p{
+    background-color: #FFF;
+    border-radius: 20px;
+    width: 30%;
+    padding: 10px;
+    font-size: 20px;
+    color: #BDBDBD;
+}
+.productOrder{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+.orderItem{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.orderItem h3{
+    font-size: 25px;
+    color: #4F4F4F;
+}
+.orderItem p{
+    font-size: 20px;
+    color: #4F4F4F;
+}
+.increaseDiv{
+    background-color: #FFF;
+    border-radius: 20px;
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+.increaseDiv button{
+    border: none;
+    font-size: 20px;
+    background-color: #FFF;
+    cursor: pointer;
+}
+.increaseDiv p{
+    font-size: 20px;
+}
+.delete{
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+    right: 0;
+}
+.activeBtn{
+    margin-top: 30px;
+    background-color: #D63626;
+    border-radius: 20px;
+    padding: 10px;
+    border: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+    color: #FFF;
+    cursor: pointer;
+}
+.btnP{
+    background-color: #FFF;
+    border-radius: 20px;
+    width: 40%;
+    padding: 10px;
+    font-size: 20px;
+    color: #D63626;
+}
+.exit{
+    margin: 0 auto;
+    cursor: pointer;
+}
+@keyframes slideDown {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
+.orderResDiv{
+    animation: slideDown 0.5s ease-out forwards; 
+  }
+.gray{
+    width: 100%;
+    height: 100vh;
+    z-index: 999999;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0,0,0,0.5);
+}
+@media (max-width:750px) {
+    .resInfo{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+    .resCuisineDiv{
+        flex-direction: column;
+    }
+    .basketDiv{
+        flex-direction: column;
+        width: 100%;
+    }
+    .basketProduct{
+        width: 100%;
+    }
+    .orderDiv{
+        padding-bottom: 60px;
+        width: 100%;
+        max-height: 50vh;
+        position: absolute;
+        bottom:-172px;
+        z-index: 999999999;
+        overflow-y:auto; 
+    }
+    .spin{
+        width: 250px;
+        height: 300px;
+    }
+    .orderDiv{
+        width: 100%;
+    }
+    .basket{
+        width: 100%;
+    }
+}

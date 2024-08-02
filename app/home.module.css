@@ -1,0 +1,356 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px auto;
+    padding-top: 10%;
+    width: 90%;
+    height: 100vh;
+    background-color: #F3F4F6;
+}
+
+.textDiv {
+    padding: 10px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-left: 20px;
+}
+
+.textDiv h1 {
+    font-size: 65px;
+    font-weight: bold;
+
+}
+
+.textDiv p {
+    font-size: 27px;
+    color: #828282;
+
+}
+
+.textDiv button {
+    font-size: 25px;
+    border-radius: 20px;
+    padding: 15px;
+    cursor: pointer;
+    width: 30%;
+}
+
+.textDiv div {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.register {
+    background-color: #D63626;
+    border: 1px solid #D63626;
+    color: #FFF;
+}
+
+.register:hover {
+    background-color: #bb2c1f;
+    border: 1px solid #bb2c1f;
+}
+
+.order {
+    color: #828282;
+    background-color: #F2F2F2;
+    border: 2px solid #828282;
+}
+
+.burgerDiv {
+    padding: 10px;
+    width: 38%;
+    background-color: black;
+    border-radius: 50px;
+    height: 80%;
+    margin-bottom: 60px;
+    margin-right: 100px;
+}
+
+.bigBurger {
+    right: 70px;
+    position: absolute;
+    top: 70px;
+    bottom: 0;
+    margin: auto;
+}
+
+.miniDiv div {
+    background-color: #FFF;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    width: 60%;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.miniDiv div:hover {
+    transform: scale(0.9);
+}
+
+
+.freeDiv {
+    position: absolute;
+    z-index: 2;
+    top: 300px;
+    right: 100px;
+}
+
+.freeDiv div {
+    display: flex;
+    flex-direction: column;
+}
+
+.pizzaDiv {
+    position: absolute;
+    top: -150px;
+    right: -300px;
+
+}
+
+.smallBurgerDiv {
+    top: 200px;
+    right: -300px;
+}
+
+.pizzaDiv div {
+    display: flex;
+    flex-direction: column;
+}
+
+.smallBurgerDiv div {
+    display: flex;
+    flex-direction: column;
+}
+
+.featuresDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 90px auto;
+    width: 90%;
+    gap: 20px;
+    background-color: #FFF;
+}
+
+.featuresDiv h3 {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.featuresDiv p {
+    width: 50%;
+    color: #828282;
+    font-size: 20px;
+    text-align: center;
+}
+
+.featuresDiv .containerDivSec {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 60px;
+    justify-content: center;
+    align-items: center;
+}
+
+.featuresDiv .containerDivSec div {
+    cursor: pointer;
+    width: 25%;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    transition: transform 0.3s ease;
+    padding-bottom: 10px;
+}
+
+.containerDivSec div:hover {
+    transform: scale(0.9);
+}
+
+.featuresDiv .containerDivSec h4 {
+    font-size: 20px;
+    color: #4F4F4F;
+}
+
+.featuresDiv .containerDivSec div p {
+    width: 80%;
+}
+
+.discover {
+    background-color:#272727;
+    border-radius: 25px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    position: relative;
+    z-index: 4;
+    padding: 30px;
+    bottom: -90px;
+}
+.discover div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+.discover h2{
+    font-size: 40px;
+    width: 80%;
+    text-align: center;
+    color: #FFF;
+    
+}
+.discover button{
+    background-color: #FB9300;
+    border-radius: 30px;
+    padding: 15px;
+    color: #fff;
+    border: 1px solid #FB9300;
+    font-size: 30px;
+    cursor: pointer;
+}
+.discover button:hover{
+    background-color:#c27407;
+    border: 1px solid #c27407;
+}
+.offerDiv{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 100px;
+}
+.offerInfo{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.offerInfo h2{
+    font-size: 35px;
+}
+.offerInfo p{
+    font-size: 25px;
+    color: #828282;
+}
+.leftImg{
+    position: absolute;
+    border-radius: 20px;
+}
+.offerImg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@media (max-width:750px) {
+    .container{
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+    .textDiv{
+        width: 90%;
+    }
+    .textDiv div{
+        flex-direction: column;
+        align-items: center;
+    }
+    .textDiv h1{
+        font-size: 30px;
+        width: 100%;
+        text-align: center;
+    }
+    .bigBurger{
+        width: 400px;
+        height: 400px;
+        left: 0;
+        right: 0;
+        top: -140px;
+    }
+    .burgerDiv{
+        background-color: #F3F4F6;
+    }
+    .textDiv button{
+        width: 60%;
+    }
+    .miniDiv div{
+        width: 140%;
+    }
+    .miniDiv div img{
+        width: 100px;
+        height: 50px;
+    }
+    .freeDiv{
+        right: 50px;
+    }
+    .pizzaDiv{
+        top: 0;
+        right: 50px;
+    }
+    .smallBurgerDiv{
+        top: 30px;
+        left: 100px;
+    }
+    .featuresDiv{
+        width: 100%;
+    }
+    .featuresDiv p{
+        width: 80%;
+    }
+    .featuresDiv .containerDivSec div{
+        width: 80%;
+    }
+    .offerDiv{
+        flex-direction: column !important;
+    }
+    .offerInfo{
+        width: 90%;
+    }
+    .offerInfo h2{
+        width: 100%;
+        text-align: center;
+    }
+    .offerInfo p{
+        font-size: 20px;
+        text-align: center;
+    }
+    .offerImg{
+        margin-top: 20px;
+    }
+    .offerImg img{
+        width: 400px;
+    }.leftImg{
+        width: 300px !important;
+    }
+    .discover{
+        width: 95%;
+    }
+    .discover h2{
+        width: 80%;
+    }
+    .discover button{
+        font-size: 20px;
+        width: 60%;
+    }
+}

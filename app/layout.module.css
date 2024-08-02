@@ -1,0 +1,63 @@
+.head{
+    width: 90%;
+    background-color: #F3F4F6;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    z-index: 9999;
+}
+.container{
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    justify-content: space-between;
+}
+.foody{
+    text-decoration: none;
+    color: black;
+}
+.foody h2{
+    font-weight: bold;
+    font-size: 30px;
+}
+.foody span{
+    color:orange;
+}
+.link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+.link a{
+    text-decoration: none;
+    font-size:20px ;
+    font-weight: bold;
+}
+.link a:hover{
+    color: #eb5547 !important;
+}
+
+.signUpDiv{
+    width: 17%;
+}
+.signUpDiv button{
+    width: 100%;
+    padding: 13px;
+    color: #fff;
+    background-color: #D63626;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 20px;
+    border: 1px solid #D63626;
+}
+.signUpDiv button:hover{
+    background-color: #bb2c1f;
+    border: 1px solid #bb2c1f;
+}
+.footer{
+    background-color: #181617;
+    width: 100%;
+}

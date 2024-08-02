@@ -1,0 +1,83 @@
+.sec{
+    background-color: #F3F4F6;
+    width: 75%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 80vh;
+}
+
+.sec h2,.sec label{
+    color: #4F4F4F;
+    font-size: 20px;
+}
+.sec h2{
+    font-size: 30px;
+}
+.addDiv{
+    display: flex;
+}
+.sec img{
+    margin: 0 auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+}
+.sec img:hover{
+    transform: scale(0.9);
+}
+.sec form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}
+.sec form div{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.sec form p{
+    color: red;
+}
+.sec input{
+    padding: 10px;
+    font-size: 20px;
+    color: 
+    #828282;
+    border: none;
+    border-radius: 10px;
+}
+.sec input:focus{
+    border:1px solid gray;
+    outline: none;
+}
+.sec button{
+    margin-top: 31px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #6FCF97;
+    border: 1px solid #6FCF97;
+    border-radius:10px;
+    color: #FFF;
+    cursor: pointer;
+}
+.sec button:hover{
+    background-color: #59a97b;
+    border: 1px solid #59a97b;
+}
+@media (max-width:750px) {
+    .sec{
+        width: 100%;
+        height: auto;
+    }
+    .sec form{
+        flex-direction: column;
+    }
+    .sec form div{
+        width: 80%;
+    }
+}
