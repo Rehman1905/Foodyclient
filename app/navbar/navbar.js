@@ -9,6 +9,11 @@ import exit from '../image/exit.png'
 import burgerMenu from '../image/burgerMenu.png'
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { userContext } from "../context/userContext";
+import lang from '../language.json'
+import { languageContext } from "../context/languageContext";
+import en from '../image/en.png'
+import az from '../image/aze.png'
+import ru from '../image/ru.png'
 export default function Navbar() {
   const path = usePathname()
   const [navbar, setNavbar] = useState(false)
@@ -17,10 +22,29 @@ export default function Navbar() {
   const [user, setUser] = useContext(userContext)
   const [avatar, setAvatar] = useState('')
   const [userPage, setUserPage] = useState(false)
-  const [avatarImg,setAvatarImg]=useState('')
+  const [avatarImg, setAvatarImg] = useState('')
+  const [language, setLanguage] = useContext(languageContext)
+  let langImg
+  if(typeof window!=='undefined'){
+    langImg = localStorage.getItem('lang')
+  }
+  const [showLang, setShowLang] = useState(false)
+  const changeLanguage = (data) => {
+    localStorage.setItem('lang', data)
+    if (data == 'en') {
+      setLanguage(lang.en)
+    } else if (data == 'aze') {
+      setLanguage(lang.aze)
+    } else if (data == 'ru') {
+      setLanguage(lang.ru)
+    }
+    setShowLang(false)
+    document.body.style.overflow = 'auto'
+  }
+
   useEffect(() => {
-    if (user.username!=='') {
-      if( user.fullname?.split(' ')){
+    if (user.username !== '') {
+      if (user.fullname?.split(' ')) {
         let dataHead = user.fullname?.split(' ');
         let arr = [];
         for (let i of dataHead) {
@@ -29,18 +53,18 @@ export default function Navbar() {
           }
           setAvatar(arr.join(""));
         }
-      }else{
-        
+      } else {
+
       }
-      
-    } else{
+
+    } else {
       setAvatar('')
     }
   }, [user])
-  useEffect(()=>{
-    const img=localStorage.getItem('img')
+  useEffect(() => {
+    const img = localStorage.getItem('img')
     setAvatarImg(JSON.parse(img))
-  },[user])
+  }, [user])
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -90,11 +114,25 @@ export default function Navbar() {
   }, [])
 
   const menuRef = useRef()
-
+  const langDorp = useRef()
   useEffect(() => {
     const handleClick = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setUserPage(false)
+        document.body.style.overflow = 'auto';
+      }
+    };
+
+    document.addEventListener('mousedown', handleClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, []);
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (langDorp.current && !langDorp.current.contains(event.target)) {
+        setShowLang(false)
         document.body.style.overflow = 'auto';
       }
     };
@@ -120,6 +158,10 @@ export default function Navbar() {
     }, 750);
     return () => clearTimeout(timer)
   }, [])
+  const showLanguage = useCallback(() => {
+    setShowLang(true)
+    document.body.style.overflow = 'hidden'
+  }, [])
   return (
     <header style={{ width: isMobile ? '100%' : '90%', position: isMobile ? 'fixed' : '' }} className={`${style.head} ${path === '/login' ? styleRes.loginHead : ''}`}>
       <div className={style.container} style={{ justifyContent: isMobile || path === '/login' ? 'start' : 'space-around', }}>
@@ -132,26 +174,55 @@ export default function Navbar() {
             : ''
           }`}>
           <div className={`${isMobile ? styleRes.responsiveLink : ''} ${style.link}`}>
-            <Link onClick={otherPage} style={{ color: path == '/' ? '#D63626' : '#828282' }} href={'/'}>Home</Link>
-            <Link onClick={otherPage} style={{ color: path.slice(0,12) == '/restaurants' ? '#D63626' : '#828282' }} href={'/restaurants'}>Restaurants</Link>
-            {avatar && isMobile ? <><Link onClick={otherPage} style={{ color: path == '/user/profile' ? '#D63626' : '#828282' }} href={'/user/profile'}>Profile</Link>
-              <Link onClick={otherPage} style={{ color: path == '/user/basket' ? '#D63626' : '#828282' }} href={'/user/basket'}>Your Basket</Link>
-              <Link onClick={otherPage} style={{ color: path == '/user/orders' ? '#D63626' : '#828282' }} href={'/user/orders'}>Your Orders</Link>
-              <Link onClick={otherPage} style={{ color: path == '/user/checkout' ? '#D63626' : '#828282' }} href={'/user/checkout'}>Checkout</Link></> : null}
-            <Link onClick={otherPage} style={{ color: path == '/aboutUs' ? '#D63626' : '#828282' }} href={'/aboutUs'}>About us</Link>
-            <Link onClick={otherPage} style={{ color: path == '/howItWorks' ? '#D63626' : '#828282' }} href={'/howItWorks'}>How it works</Link>
-            <Link onClick={otherPage} style={{ color: path == '/faqs' ? '#D63626' : '#828282' }} href={'/faqs'}>FAQs</Link>
+            <Link onClick={otherPage} style={{ color: path == '/' ? '#D63626' : '#828282' }} href={'/'}>{language[0].nav.home}</Link>
+            <Link onClick={otherPage} style={{ color: path.slice(0, 12) == '/restaurants' ? '#D63626' : '#828282' }} href={'/restaurants'}>{language[0].nav.restuarant}</Link>
+            {avatar && isMobile ? <><Link onClick={otherPage} style={{ color: path == '/user/profile' ? '#D63626' : '#828282' }} href={'/user/profile'}>{language[0].nav.profile}</Link>
+              <Link onClick={otherPage} style={{ color: path == '/user/basket' ? '#D63626' : '#828282' }} href={'/user/basket'}>{language[0].nav.basket}</Link>
+              <Link onClick={otherPage} style={{ color: path == '/user/orders' ? '#D63626' : '#828282' }} href={'/user/orders'}>{language[0].nav.order}</Link>
+              <Link onClick={otherPage} style={{ color: path == '/user/checkout' ? '#D63626' : '#828282' }} href={'/user/checkout'}>{language[0].nav.checkout}</Link></> : null}
+            <Link onClick={otherPage} style={{ color: path == '/aboutUs' ? '#D63626' : '#828282' }} href={'/aboutUs'}>{language[0].nav.about}</Link>
+            <Link onClick={otherPage} style={{ color: path == '/howItWorks' ? '#D63626' : '#828282' }} href={'/howItWorks'}>{language[0].nav.works}</Link>
+            <Link onClick={otherPage} style={{ color: path == '/faqs' ? '#D63626' : '#828282' }} href={'/faqs'}>{language[0].nav.faqs}</Link>
+
             {avatar && isMobile ? <Link onClick={clickLinkLogout} style={{ color: path == '/faqs' ? '#D63626' : '#828282' }} href={'/'}>Logout</Link> : null}
+
           </div>
-          <div className={`${isMobile ? styleRes.btnDiv : ''} ${style.signUpDiv}`}>
-            <Image onClick={exitFunc} width={50} height={50} className={styleRes.exit} style={{ display: isMobile ? 'block' : 'none' }} src={exit} alt="exit" />
-            <button style={{ display: avatar ? 'none' : 'block' }} onClick={singUp}>Sign up</button>
-            <div ref={menuRef} style={{ display: !avatar || isMobile ? 'none' : 'flex' }} onClick={userInfo} className={styleRes.avatar}>
-              <Image width={50} height={50} src={basketImg} alt="basket" />
-              {!avatarImg?<p>{avatar}</p>:
-              <Image style={{borderRadius:"50%",cursor:'pointer'}} src={avatarImg} width={50} height={50}/>}
+          <div className={`${isMobile ? styleRes.btnDiv : ''} ${style.signUpDiv} ${styleRes.langDiv}`}>
+            <ul ref={langDorp} className={styleRes.lang} >
+              <li>
+                {langImg === 'ru' ? (
+                  <Image onClick={() => showLanguage('ru')} src={ru} width={100} height={50} alt="language" />
+                ) : langImg === 'aze' ? (
+                <Image onClick={() => showLanguage('aze')} src={az} width={50} height={50} alt="language" />
+                ) : (
+                  <Image onClick={() => showLanguage('en')} src={en} width={50} height={50} alt="language" />
+                )}
+              </li>
+              <ul style={{ display: showLang ? 'flex' : 'none' }}>
+                <li>
+                  <Image onClick={() => changeLanguage('en')} src={en} width={50} height={50} alt="language" />
+                </li>
+                <li>
+                  <Image onClick={() => changeLanguage('aze')} src={az} width={50} height={50} alt="language" />
+                </li>
+                <li>
+                  <Image onClick={() => changeLanguage('ru')} src={ru} width={100} height={50} alt="language" />
+                </li>
+              </ul>
+            </ul>
+            <div >
+              <Image onClick={exitFunc} width={50} height={50} className={styleRes.exit} style={{ display: isMobile ? 'block' : 'none' }} src={exit} alt="exit" />
+              <button style={{ display: avatar ? 'none' : 'block' }} onClick={singUp}>Sign up</button>
+              <div ref={menuRef} style={{ display: !avatar || isMobile ? 'none' : 'flex' }} className={styleRes.avatar}>
+                {/* <Image width={50} height={50} src={basketImg} alt="basket" /> */}
+
+                {!avatarImg ? <p onClick={userInfo} >{avatar}</p> :
+                  <Image style={{ borderRadius: "50%", cursor: 'pointer' }} src={avatarImg} width={50} height={50} onClick={userInfo} />}
+              </div>
+
             </div>
           </div>
+
         </div>
       </div>
       <div ref={menuRef} style={{ display: userPage && !isMobile ? 'flex' : 'none' }} className={styleRes.user}>

@@ -1,12 +1,14 @@
 'use client'
 import axios from "axios";
 import threeDote from '../image/3dote.png';
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import style from './orders.module.css';
 import Show from './product'
 import spinner from '../../image/spin.gif'
+import { languageContext } from "../../context/languageContext";
 export default function Orders() {
+    const [language,setLanguage]=useContext(languageContext)
     const [orders, setOrders] = useState([]);
     const [showStates, setShowStates] = useState({});
     const [spin,setSpin]=useState(true)
@@ -19,7 +21,7 @@ export default function Orders() {
     
     const fetchOrders = async () => {
        
-        const response = await axios.get('/api/order', {
+        const response = await axios.get('/api/order/user', {
             headers: {
                 Authorization: `Bearer ${authorization}`
             }
@@ -84,17 +86,17 @@ export default function Orders() {
         <>
         <Image width={500} height={500} className={style.spin} src={spinner} style={{display:spin?'block':'none'}}/>
             <section style={{display:spin?'none':'flex'}} className={style.sec}>
-                <h2>Your Orders</h2>
+                <h2>{language[0].nav.order}</h2>
                 <table className={style.table}>
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Time</th>
-                            <th>Delivery Address</th>
-                            <th>Amount</th>
-                            <th>Payment Method</th>
-                            <th>Contact</th>
-                            <th>Actions</th>
+                            <th>{language[0].user.time}</th>
+                            <th>{language[0].user.delivery_address}</th>
+                            <th>{language[0].user.amount}</th>
+                            <th>{language[0].user.payment_method}</th>
+                            <th>{language[0].user.contact}</th>
+                            <th>{language[0].user.profile}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,8 +119,8 @@ export default function Orders() {
                                         />
                                         {showStates[order.id] && (
                                             <div className={style.addDiv}>
-                                                <p onClick={() => showOrder(order.products)} className={style.green}>Show</p>
-                                                <p onClick={() => deleteOrder(order.id)} className={style.red}>Delete</p>
+                                                <p onClick={() => showOrder(order.products)} className={style.green}>{language[0].user.show}</p>
+                                                <p onClick={() => deleteOrder(order.id)} className={style.red}>{language[0].user.delete}</p>
                                             </div>
                                         )}
                                     </div>

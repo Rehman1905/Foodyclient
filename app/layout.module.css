@@ -41,10 +41,10 @@
 }
 
 .signUpDiv{
-    width: 17%;
+    width: 30%;
 }
 .signUpDiv button{
-    width: 100%;
+    width: 150px;
     padding: 13px;
     color: #fff;
     background-color: #D63626;
@@ -60,4 +60,9 @@
 .footer{
     background-color: #181617;
     width: 100%;
+}
+@media (max-width:780px) {
+    .signUpDiv button{
+        width: 150px;
+    }
 }

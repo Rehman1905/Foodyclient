@@ -12,12 +12,27 @@ import dubbleBurger from './image/dubbleBurger.png'
 import twister from './image/twister.png'
 import margarita from './image/margaritta.png'
 import pizzaDiscover from './image/pizzaDiscover.png'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import leftImg from './image/leftRed.png'
 import rightImg from './image/rightRed.png'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { languageContext } from './context/languageContext'
 export default function Home() {
+    const [language, setLanguage] =useContext(languageContext);
+    // const [changeLanguag, setChangeLanguage] = useState(false);
+    // useEffect(()=>{
+    //     setLanguage(`${lang}.${data}`)
+    // },[data])
+    //   useEffect(() => {
+    //     const storedLang = localStorage.getItem('lang');
+    //     if (storedLang && lang[storedLang]) {
+    //       setLanguage(lang[storedLang]);
+    //     } else {
+    //       setLanguage(lang.en);
+    //     }
+    //     setChangeLanguage(false)
+    //   }, [changeLanguag]);
     const [offer, setOffer] = useState([])
     useEffect(() => {
         const fetchOffers = async () => {
@@ -46,15 +61,18 @@ export default function Home() {
     const singUp = useCallback(() => {
         router.push('/login')
     }, [])
+    const orderNow = useCallback(() => {
+        router.push('/restaurants')
+    })
     return (
         <div>
             <div className={style.container}>
                 <div className={style.textDiv}>
-                    <h1>Our Food site makes it easy to find local food</h1>
-                    <p style={{ display: isMobile ? 'none' : 'block' }}>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+                    <h1>{language[0].home.title}</h1>
+                    <p style={{ display: isMobile ? 'none' : 'block' }}>{language[0].home.body}</p>
                     <div>
-                        <button onClick={singUp} className={style.register}>Register</button>
-                        <button className={style.order}>Order now</button>
+                        <button onClick={singUp} className={style.register}>{language[0].home.registerBtn}</button>
+                        <button className={style.order} onClick={orderNow}>{language[0].home.orderBtn}</button>
                     </div>
                 </div>
                 <div className={style.burgerDiv}>
@@ -85,8 +103,8 @@ export default function Home() {
                 </div>
             </div>
             <div className={style.featuresDiv}>
-                <h3>Features</h3>
-                <p>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+                <h3>{language[0].home.features}</h3>
+                <p>{language[0].home.body}</p>
                 <div className={style.containerDivSec}>
                     <div>
                         <Image width={300} height={200} src={bigPerson} alt='person' />
@@ -107,20 +125,20 @@ export default function Home() {
             </div>
             <section >
                 {offer.map((offer, index) => (
-                    <div style={{ flexDirection: index % 2 != 0 ? 'row' : 'row-reverse' }} className={style.offerDiv}>
+                    <div key={`${index}-div`} style={{ flexDirection: index % 2 != 0 ? 'row' : 'row-reverse' }} className={style.offerDiv}>
                         <div className={style.offerInfo}>
                             <h2>{offer.name}</h2>
                             <p>{offer.description}</p>
                         </div>
                         <div className={style.offerImg}>
                             <Image className={style.leftImg} src={offer.img_url} width={350} height={350} alt='offer' />
-                            <Image width={500} height={500} src={index % 2 == 0 ? leftImg : rightImg} />
+                            <Image width={500} height={500} src={index % 2 == 0 ? leftImg : rightImg} alt='img'/>
                         </div>
                     </div>
                 ))}
             </section>
             <div className={style.featuresDiv} >
-                <h3>Our Popular Update New Foods</h3>
+                <h3>{language[0].home.popular}</h3>
                 <p>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
                 <div className={style.containerDivSec}>
                     <div>
@@ -144,9 +162,8 @@ export default function Home() {
                 <div className={style.discover}>
                     <Image style={{ display: isMobile ? 'none' : 'block' }} width={200} height={200} src={pizzaDiscover} alt='pizza' />
                     <div>
-                        <h2>Discover Restaurants
-                            Near From you</h2>
-                        <button>Explore now</button>
+                        <h2>{language[0].home.discover}</h2>
+                        <button>{language[0].home.explore}</button>
                     </div>
                     <Image style={{ display: isMobile ? 'none' : 'block' }} width={200} height={200} src={bigBurger} alt='pizza' />
                 </div>

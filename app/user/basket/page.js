@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import exitImg from '../../restaurants/image/exit.png'
 import basketImg from '../../restaurants/image/basket.png'
 import emptyBasket from '../../restaurants/image/emptyBasket.png'
@@ -9,11 +9,16 @@ import style from '../../restaurants/[product]/basket.module.css'
 import Image from 'next/image';
 import axios from 'axios';
 import styleBas from './basket.module.css'
+import { languageContext } from '../../context/languageContext';
+import { useRouter } from 'next/navigation';
+import { refreshAccessToken } from '../../refresh'
+
 export default function Basket() {
     const [basket, setBasket] = useState({})
     const [show, setShow] = useState(false)
     const [empty, setEmpty] = useState(true)
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [language]=useContext(languageContext)
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768);
@@ -33,17 +38,52 @@ export default function Basket() {
         document.body.style.overflow = 'auto';
         setShow(false)
     }, [])
+    // const fetchBasket = async () => {
+    //     const authorization = localStorage.getItem('access_token');
+    //     const responseBasket = await axios.get('/api/basket', {
+    //         headers: {
+    //             Authorization: `Bearer ${authorization}`
+    //         }
+    //     });
+    //     setBasket(responseBasket.data.result.data)
+    // }
     const fetchBasket = async () => {
-        const authorization = localStorage.getItem('access_token');
-        const responseBasket = await axios.get('/api/basket', {
-            headers: {
-                Authorization: `Bearer ${authorization}`
+        try {
+            let token = localStorage.getItem('access_token');
+            if (!token) {
+                return;
             }
-        });
-        setBasket(responseBasket.data.result.data)
+            try {
+                const responseBasket = await axios.get('/api/basket', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setBasket(responseBasket.data.result.data);
+            } catch (error) {
+                console.log(error.response.status)
+                if (error.response && error.response.status === 401) {
+                    token = await refreshAccessToken();
+                    if (!token) {
+                        return;
+                    }
+                    const retryResponseBasket = await axios.get('/api/basket', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    setBasket(retryResponseBasket.data.result.data);
+                } else {
+                    console.log(error.response.status)
+                    throw error;
+                }
+            }
+        } catch (error) {
+            console.log(error.response.status)
+            console.error('Error fetching basket:', error);
+        }
     }
     useEffect(() => {
-        
         fetchBasket()
     }, [])
     const resBasket = useRef()
@@ -79,6 +119,7 @@ export default function Basket() {
                 }
             });
         } catch (error) {
+            console.log('first',error.status)
             console.error('Error adding product to basket:', error);
         }
 
@@ -97,13 +138,14 @@ export default function Basket() {
                 }
             });
         } catch (error) {
+            console.log('firsttt',error.status)
+
             console.error('Error deleting product from basket:', error);
         }
         fetchBasket();
 
     }, []);
     const increaseProduct = useCallback(async (id) => {
-        console.log(id);
         const authorization = localStorage.getItem('access_token');
         try {
             await axios.delete('/api/basket/delete', {
@@ -115,10 +157,16 @@ export default function Basket() {
                 }
             });
         } catch (error) {
+            console.log('firs',error.status)
+
             console.error('Error deleting product from basket:', error);
         }
         fetchBasket();
     }, []);
+    const router=useRouter()
+    const getCheckout=useCallback(()=>{
+        router.push('/user/checkout')
+    },[])
     return (
         <>
             <div className={`${style.basketDiv} ${styleBas.basketDiv}`}>
@@ -126,7 +174,7 @@ export default function Basket() {
                     <Image onClick={exit} style={{ display: show ? 'block' : 'none' }} className={style.exit} src={exitImg} width={50} height={50} alt='exit' />
                     <div className={style.itemDiv}>
                         <Image src={empty ? empBasket : basketImg} alt='basket' width={30} height={30} />
-                        <p style={{ color: empty ? '#BDBDBD' : '#D63626' }}>{basket.total_item} items</p>
+                        <p style={{ color: empty ? '#BDBDBD' : '#D63626' }}>{basket.total_item} {language[0].restuarant.items}</p>
                     </div>
                     <hr />
                     {!empty ? (
@@ -144,7 +192,7 @@ export default function Basket() {
                                         <button onClick={() => addProduct(item.id)}>+</button>
                                         <p>{item.count}</p>
                                         <button onClick={() => increaseProduct(item.id)}>-</button>
-                                        <Image onClick={() => deleteProduct(item.id)} className={style.delete} src={deleteImg} width={30} height={30} />
+                                        <Image onClick={() => deleteProduct(item.id)} className={style.delete} src={deleteImg} width={30} height={30} alt='item'/>
                                     </div>
                                 </div>
                                 <hr />
@@ -153,8 +201,8 @@ export default function Basket() {
                     ) : (
                         <Image className={style.emptyBasket} src={emptyBasket} alt="Empty Basket" width={300} height={300} />
                     )}
-                    {empty ? (<p className={style.opps}>Opps!<span>Basket empty</span></p>) : null}
-                    <button disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn} ${styleBas.btn}`}>Checkout <p className={style.btnP}>${basket.total_amount}</p></button>
+                    {empty ? (<p className={style.opps}>Opps!<span>{language[0].restuarant.basketEmpty}</span></p>) : null}
+                    <button onClick={getCheckout} disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn} ${styleBas.btn}`}>{language[0].user.checkout} <p className={style.btnP}>${basket.total_amount}</p></button>
                 </div>
                 {/* <button onClick={showBasket} style={{ display: isMobile ? 'flex' : 'none' }} disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn}`}><Image src={empBasket} alt='basket' width={30} height={30} />
                     <p style={{ color: '#BDBDBD' }}>{basket.total_item} items</p>Checkout <p className={style.btnP}>${basket.total_amount}</p></button> */}

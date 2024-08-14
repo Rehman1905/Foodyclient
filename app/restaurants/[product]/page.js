@@ -3,7 +3,7 @@ import style from './basket.module.css'
 import axios from "axios"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import spinImg from '../../image/spin.gif'
 import plus from '../image/plus.png'
 import basketImg from '../image/basket.png'
@@ -11,6 +11,9 @@ import emptyBasket from '../image/emptyBasket.png'
 import empBasket from '../image/emoBasket.png'
 import deleteImg from '../image/delete.png'
 import exitImg from '../image/exit.png'
+import { languageContext } from '../../context/languageContext'
+import { refreshAccessToken } from '../../refresh'
+
 export default function Product() {
     const [spin, setSpin] = useState(true)
     const [restuarant, setRestuarant] = useState([])
@@ -19,6 +22,7 @@ export default function Product() {
     const [empty, setEmpty] = useState(true)
     const [show, setShow] = useState(false)
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [language]=useContext(languageContext)
     const path = useParams()
     const router = useRouter()
     useEffect(() => {
@@ -34,28 +38,54 @@ export default function Product() {
     }, []);
     useEffect(() => {
         const fetchRestuarantData = async () => {
-            setSpin(true)
-            const response = await axios.get(`/api/restuarants/${path.product}`)
-            setRestuarant(response.data.result.data)
-            const responseProduct = await axios.get('/api/products')
-            setProducts(responseProduct.data.result.data.filter(product => product.rest_id === path.product))
-            fetchBasket()
-            setSpin(false)
-        }
-        fetchRestuarantData()
-    }, [])
+            setSpin(true);
+    
+            try {
+                const response = await axios.get(`/api/restuarants/${path.product}`);
+                setRestuarant(response.data.result.data);
+                
+                const responseProduct = await axios.get('/api/products');
+                setProducts(responseProduct.data.result.data.filter(product => product.rest_id === path.product));
+    
+                await fetchBasket(); // fetchBasket funksiyasını await edin
+    
+            } catch (error) {
+                if (error.response.status === 401) {
+                    // Access token müddəti bitibsə, yeniləyin və təkrar cəhd edin
+                    await refreshAccessToken();
+                    await fetchRestuarantData(); // Yenidən sorğunu göndərin
+                } else {
+                    console.error("Error fetching restaurant data:", error);
+                }
+            } finally {
+                setSpin(false);
+            }
+        };
+    
+        fetchRestuarantData();
+    }, []);
     const back = useCallback(() => {
         router.push('/restaurants')
     }, [])
     const fetchBasket = async () => {
         const authorization = localStorage.getItem('access_token');
-        const responseBasket = await axios.get('/api/basket', {
-            headers: {
-                Authorization: `Bearer ${authorization}`
+        try {
+            const responseBasket = await axios.get('/api/basket', {
+                headers: {
+                    Authorization: `Bearer ${authorization}`
+                }
+            });
+            setBasket(responseBasket.data.result.data);
+        } catch (error) {
+            if (error.response.status === 401) {
+                await refreshAccessToken();
+                await fetchBasket(); // Yenidən sorğunu göndərin
+            } else {
+                console.error('Error fetching basket:', error);
             }
-        });
-        setBasket(responseBasket.data.result.data)
-    }
+        }
+    };
+    
     const addProduct = useCallback(async (id) => {
         const authorization = localStorage.getItem('access_token');
         try {
@@ -66,13 +96,16 @@ export default function Product() {
                     Authorization: `Bearer ${authorization}`
                 }
             });
+            await fetchBasket();
         } catch (error) {
-            console.error('Error adding product to basket:', error);
+            if (error.response.status === 401) {
+                await refreshAccessToken();
+                await addProduct(id); // Yenidən sorğunu göndərin
+            } else {
+                console.error('Error adding product to basket:', error);
+            }
         }
-
-        fetchBasket()
-
-    }, [])
+    }, []);
     const deleteProduct = useCallback(async () => {
         const authorization = localStorage.getItem('access_token');
         try {
@@ -84,12 +117,16 @@ export default function Product() {
                     basket_id: basket.id
                 }
             });
+            await fetchBasket();
         } catch (error) {
-            console.error('Error deleting product from basket:', error);
+            if (error.response.status === 401) {
+                await refreshAccessToken();
+                await deleteProduct(); // Yenidən sorğunu göndərin
+            } else {
+                console.error('Error deleting product from basket:', error);
+            }
         }
-        fetchBasket();
-
-    }, []);
+    }, [basket]);
     useEffect(() => {
         if (basket.total_item) {
             setEmpty(false)
@@ -98,7 +135,6 @@ export default function Product() {
         }
     }, [basket])
     const increaseProduct = useCallback(async (id) => {
-        console.log(id);
         const authorization = localStorage.getItem('access_token');
         try {
             await axios.delete('/api/basket/delete', {
@@ -109,10 +145,15 @@ export default function Product() {
                     product_id: id
                 }
             });
+            await fetchBasket();
         } catch (error) {
-            console.error('Error deleting product from basket:', error);
+            if (error.response.status === 401) {
+                await refreshAccessToken();
+                await increaseProduct(id); // Yenidən sorğunu göndərin
+            } else {
+                console.error('Error deleting product from basket:', error);
+            }
         }
-        fetchBasket();
     }, []);
     const showBasket = useCallback(() => {
         document.body.style.overflow = 'hidden';
@@ -152,12 +193,12 @@ export default function Product() {
                         </div>
                         <div className={style.resCuisineDiv}>
                             <div className={style.cuisine}>
-                                <h3>Cuisine</h3>
+                                <h3>{language[0].restuarant.cuisine}</h3>
                                 <p>{restuarant.cuisine}</p>
                             </div>
                             <div className={style.btn}>
-                                <button className={style.delivery}>${restuarant.delivery_price} Delivery</button>
-                                <button onClick={back} className={style.back}>Go Back</button>
+                                <button className={style.delivery}>${restuarant.delivery_price} {language[0].restuarant.delivery}</button>
+                                <button onClick={back} className={style.back}>{language[0].restuarant.back}</button>
                             </div>
                         </div>
                     </div>
@@ -165,7 +206,7 @@ export default function Product() {
                 </div>
                 <div className={style.basketDiv}>
                     <div className={style.basketProduct}>
-                        <h2>Products</h2>
+                        <h2>{language[0].restuarant.products}</h2>
                         <hr />
                         {products.map(product => (
                             <>
@@ -190,7 +231,7 @@ export default function Product() {
                         <Image onClick={exit} style={{ display: show ? 'block' : 'none' }} className={style.exit} src={exitImg} width={50} height={50} alt='exit' />
                         <div className={style.itemDiv}>
                             <Image src={empty ? empBasket : basketImg} alt='basket' width={30} height={30} />
-                            <p style={{ color: empty ? '#BDBDBD' : '#D63626' }}>{basket.total_item} items</p>
+                            <p style={{ color: empty ? '#BDBDBD' : '#D63626' }}>{basket.total_item} {language[0].restuarant.items}</p>
                         </div>
                         <hr />
                         {!empty ? (
@@ -208,7 +249,7 @@ export default function Product() {
                                             <button onClick={() => addProduct(item.id)}>+</button>
                                             <p>{item.count}</p>
                                             <button onClick={() => increaseProduct(item.id)}>-</button>
-                                            <Image onClick={() => deleteProduct(item.id)} className={style.delete} src={deleteImg} width={30} height={30} />
+                                            <Image onClick={() => deleteProduct(item.id)} className={style.delete} src={deleteImg} width={30} height={30} alt='delete'/>
                                         </div>
                                     </div>
                                     <hr />
@@ -217,11 +258,11 @@ export default function Product() {
                         ) : (
                             <Image className={style.emptyBasket} src={emptyBasket} alt="Empty Basket" width={300} height={300} />
                         )}
-                        {empty ? (<p className={style.opps}>Opps!<span>Basket empty</span></p>) : null}
-                        <button onClick={checkout} disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn}`}>Checkout <p className={style.btnP}>${basket.total_amount}</p></button>
+                        {empty ? (<p className={style.opps}>Opps!<span>{language[0].restuarant.basketEmpty} </span></p>) : null}
+                        <button onClick={checkout} disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn}`}>{language[0].restuarant.checkout}<p className={style.btnP}>${basket.total_amount}</p></button>
                     </div>
                     <button  onClick={showBasket} style={{ display: isMobile ? 'flex' : 'none' }} disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn}`}><Image src={empBasket} alt='basket' width={30} height={30} />
-                        <p style={{ color: '#BDBDBD' }}>{basket.total_item} items</p>Checkout <p className={style.btnP}>${basket.total_amount}</p></button>
+                        <p style={{ color: '#BDBDBD' }}>{basket.total_item} {language[0].restuarant.items}</p>{language[0].restuarant.checkout} <p className={style.btnP}>${basket.total_amount}</p></button>
                 </div>
             </section>
             <div className={style.gray} style={{ display: show ? 'block' : 'none' }}></div>

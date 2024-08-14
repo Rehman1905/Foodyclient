@@ -71,7 +71,7 @@
 .mainDiv{
     display: flex;
     align-items: center;
-    width: 71%;
+    width: 80%;
     justify-content: space-between;
 }
 
@@ -158,4 +158,35 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+.lang{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.lang ul{
+  top: 80px;
+  gap: 10px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  animation: slideDown 0.5s ease-out forwards; 
+
+}
+.lang ul li{
+  display: flex;
+  justify-content: center;
+}
+.lang li{
+  text-decoration: none;
+}
+.langDiv{
+  justify-content: center;
+  display: flex;
+  gap: 20px;
 }

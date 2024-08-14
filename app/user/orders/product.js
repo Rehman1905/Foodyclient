@@ -1,11 +1,12 @@
 'use client'
 import Image from "next/image";
 import style from './product.module.css';
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
+import { languageContext } from "../../context/languageContext";
 
 export default function Show({ product, setProduct }) {
     const dropdownRef = useRef(null);
-
+    const [language]=useContext(languageContext)
     const handleClickOutside = useCallback((event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setProduct({
@@ -38,11 +39,11 @@ export default function Show({ product, setProduct }) {
                 <table className={style.table}>
                     <thead>
                         <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Price $</th>
-                            <th>Count</th>
-                            <th>Amount</th>
+                            <th>{language[0].user.image}</th>
+                            <th>{language[0].user.name}</th>
+                            <th>{language[0].user.price} $</th>
+                            <th>{language[0].user.count}</th>
+                            <th>{language[0].user.amount}</th>
                         </tr>
                     </thead>
                     <tbody>

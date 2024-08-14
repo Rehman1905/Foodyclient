@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import style from './retaurant.module.css'
 import Image from 'next/image'
 import axios from 'axios'
@@ -9,7 +9,8 @@ import spinImg from '../image/spin.gif'
 import exitImg from './image/exit.png'
 import filterImg from './image/filter.png'
 import { useRouter } from 'next/navigation'
-
+import { languageContext } from '../context/languageContext'
+import { refreshAccessToken } from '../refresh'
 export default function Restaurants() {
     const [categories, setCategories] = useState([]);
     const [restaurants, setRestaurants] = useState([]);
@@ -20,7 +21,8 @@ export default function Restaurants() {
     const [spin, setSpin] = useState(true)
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [filter, setFilter] = useState(false)
-    const [showRestuarants,setShowRestuarants]=useState([])
+    const [showRestuarants, setShowRestuarants] = useState([])
+    const [language, setLanguage] = useContext(languageContext)
     const router = useRouter()
     useEffect(() => {
         const handleResize = () => {
@@ -47,12 +49,47 @@ export default function Restaurants() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                setSpin(true)
-                const res = await axios.get('/api/category');
-                setCategories(res.data.result.data);
-                const resRes=await axios.get('/api/restuarants')
-                setRestaurants(resRes.data.result.data)
-                setSpin(false)
+                setSpin(true);
+                let token
+                if (localStorage.getItem('access_token')) {
+                    token = localStorage.getItem('access_token');
+                }
+                try {
+                    const res = await axios.get('/api/category', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    setCategories(res.data.result.data);
+
+                    const resRes = await axios.get('/api/restuarants', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    setRestaurants(resRes.data.result.data);
+                } catch (error) {
+                    if (error.response.status === 401) {
+                        token = await refreshAccessToken();
+                        const res = await axios.get('/api/category', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+                        setCategories(res.data.result.data);
+
+                        const resRes = await axios.get('/api/restuarants', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+                        setRestaurants(resRes.data.result.data);
+                    } else {
+                        throw error;
+                    }
+                }
+
+                setSpin(false);
             } catch (error) {
                 console.error("Error fetching categories:", error);
             }
@@ -60,6 +97,7 @@ export default function Restaurants() {
 
         fetchCategories();
     }, []);
+
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -78,7 +116,7 @@ export default function Restaurants() {
         };
 
         fetchRestaurants();
-    }, [categoryId, page,restaurants]);
+    }, [categoryId, page, restaurants]);
 
 
     const handleCategoryChange = useCallback((id) => {
@@ -98,20 +136,26 @@ export default function Restaurants() {
         setFilter(false)
         document.body.style.overflow = 'auto';
     }, [])
-    const aboutProduct=useCallback((id)=>{
-        router.push(`/restaurants/${id}`)
-    },[])
+    const aboutProduct = useCallback((id) => {
+        const user = localStorage.getItem('user')
+        if (!user) {
+            alert('Please register first.')
+            router.push('/login')
+        } else {
+            router.push(`/restaurants/${id}`)
+        }
+    }, [])
     return (
         <>
             <section style={{ display: spin ? 'none' : 'flex' }} className={style.sec}>
                 <div onClick={filterFunc} className={style.filterDiv} style={{ display: isMobile ? 'flex' : 'none' }}>
-                    <Image src={filterImg} width={50} height={50} />
+                    <Image src={filterImg} width={50} height={50} alt='filter' />
                     <p>Filter</p>
                 </div>
                 <div style={{ display: (isMobile && filter) ? 'flex' : 'none' }} className={style.filterBottom}>
-                    <Image onClick={exit} style={{ cursor: 'pointer' }} src={exitImg} width={50} height={50} />
+                    <Image onClick={exit} style={{ cursor: 'pointer' }} src={exitImg} width={50} height={50} alt='exit' />
                     <div onClick={() => handleCategoryChange('all')}>
-                        <p>All restuarants</p>
+                        <p>{language[0].restuarant.allRestaurant}</p>
                         <hr />
                     </div>
                     {categories.map(category => (
@@ -123,7 +167,7 @@ export default function Restaurants() {
                 </div>
                 <nav style={{ display: isMobile ? 'none' : 'flex' }} className={style.nav}>
                     <div onClick={() => handleCategoryChange('all')} style={{ backgroundColor: categoryId === 'all' ? '#E53935' : '#F3F4F6' }}>
-                        <p style={{ color: categoryId === 'all' ? '#FFF' : '#333333' }}>All Restaurants</p>
+                        <p style={{ color: categoryId === 'all' ? '#FFF' : '#333333' }}>{language[0].restuarant.allRestaurant}</p>
                     </div>
                     {categories.map(category => (
                         <div onClick={() => handleCategoryChange(category.id)} style={{ backgroundColor: categoryId === category.id ? '#E53935' : '#F3F4F6' }} key={category.id}>
@@ -136,14 +180,14 @@ export default function Restaurants() {
                 <div style={{ display: spin ? 'none' : 'flex' }} className={style.restaurant}>
                     <div className={style.restaurantDiv}>
                         {showRestuarants.map(restaurant => (
-                            <div onClick={()=>aboutProduct(restaurant.id)} className={style.mainDiv} key={restaurant.id}>
+                            <div onClick={() => aboutProduct(restaurant.id)} className={style.mainDiv} key={restaurant.id}>
                                 <div className={style.info}>
                                     <Image src={restaurant.img_url} width={100} height={100} alt='restaurant' />
                                     <h3>{restaurant.name}</h3>
                                     <p>{restaurant.cuisine}</p>
                                 </div>
                                 <div className={style.delievery}>
-                                    <p>${restaurant.delivery_price} delivery</p>
+                                    <p>${restaurant.delivery_price} {language[0].restuarant.delivery}</p>
                                     <button>{restaurant.delivery_min} Min</button>
                                 </div>
                             </div>
@@ -173,7 +217,7 @@ export default function Restaurants() {
                     />
                 </div>
             </section>
-            <Image className={style.spin} style={{ display: spin ? 'block' : 'none' }} width={600} height={600} src={spinImg} />
+            <Image className={style.spin} style={{ display: spin ? 'block' : 'none' }} width={600} height={600} src={spinImg} alt='spin' />
             <div className={style.gray} style={{ display: filter ? 'block' : 'none' }} ></div>
         </>
     );

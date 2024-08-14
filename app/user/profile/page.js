@@ -5,9 +5,11 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import style from './profil.module.css'
 import axios from 'axios'
 import { userContext } from '../../context/userContext'
+import { languageContext } from '../../context/languageContext'
 
 export default function Profile() {
     const [user, setUser] = useContext(userContext)
+    const [language,setLanguage]=useContext(languageContext)
     const [phone, setPhone] = useState('+994')
     const [error, setError] = useState({
         address: '',
@@ -119,7 +121,7 @@ export default function Profile() {
     },[])
     return (
         <section className={style.sec}>
-            <h2>Profile</h2>
+            <h2>{language[0].user.profile}</h2>
             <div className={style.addDiv}>
                 <input ref={fileInputRef}
                     style={{ display: 'none' }} type='file' onChange={handleImageChange}></input>
@@ -128,32 +130,32 @@ export default function Profile() {
             </div>
             <form>
                 <div>
-                    <label htmlFor='contact'>Contact</label>
+                    <label htmlFor='contact'>{language[0].user.contact}</label>
                     <input type='tel' ref={contact} value={phone} maxLength="13" onChange={inputChange} id="contact" />
                     {error.contact ? <p>{error.contact}</p> : null}
                 </div>
                 <div>
-                    <label htmlFor='email'>Email</label>
+                    <label htmlFor='email'>{language[0].login.email}</label>
                     <input ref={email} placeholder='example@gmail.com' type='email' id='email' />
                     {error.email ? <p>{error.email}</p> : null}
                 </div>
                 <div>
-                    <label htmlFor='username'>Username</label>
+                    <label htmlFor='username'>{language[0].login.username}</label>
                     <input ref={username} type='text' id='username' placeholder='username' />
                     {error.username ? <p>{error.username}</p> : null}
                 </div>
                 <div>
-                    <label htmlFor='address'>Address</label>
+                    <label htmlFor='address'>{language[0].user.address}</label>
                     <input ref={address} placeholder='address' type='text' id='address' />
                     {error.address ? <p>{error.address}</p> : null}
                 </div>
                 <div>
-                    <label htmlFor='fullname'>Full Name</label>
+                    <label htmlFor='fullname'>{language[0].login.fullname}</label>
                     <input ref={fullname} type='text' placeholder='fullname' id='fullname' />
                     {error.fullname ? <p>{error.fullname}</p> : null}
                 </div>
                 <div>
-                    <button onClick={save}>Save</button>
+                    <button onClick={save}>{language[0].user.save}</button>
                 </div>
             </form>
         </section>

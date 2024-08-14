@@ -1,0 +1,246 @@
+{
+    "en": [
+        {
+            "nav": {
+                "home": "Home",
+                "restuarant": "Restaurants",
+                "about": "About us",
+                "works": "How it Works",
+                "profile": "Profile",
+                "basket": "Your Basket",
+                "order": "Your Orders",
+                "checkout": "Checkout",
+                "faqs": "FAQs",
+                "sing": "Sign up",
+                "logout": "Logout"
+            },
+            "home": {
+                "title": "Our Food site makes it easy to find local food",
+                "body": "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",
+                "registerBtn": "Register",
+                "orderBtn": "Order now",
+                "features": "Features",
+                "popular": "Our Popular Update New Foods",
+                "discover": "Discover Restaurants Near From you",
+                "explore": "Explore now"
+            },
+            "login": {
+                "login": "Login",
+                "register": "Register",
+                "username": "Username",
+                "password": "Password",
+                "loginBtn": "Log in",
+                "fullname": "Full Name",
+                "email": "Email",
+                "registerBtn": "Register"
+            },
+            "restuarant": {
+                "delivery":"delivery",
+                "allRestaurant": "All Restaurants",
+                "cuisine": "Cuisine",
+                "back": "Go Back",
+                "items": "items",
+                "checkout": "Checkout",
+                "products": "Products",
+                "basketEmpty":"Basket Empty"
+            },
+            "user": {
+                "profile": "Profile",
+                "basket": "Your Basket",
+                "order": "Your Orders",
+                "checkout": "Checkout",
+                "logout": "Logout",
+                "contact": "Contact",
+                "address": "Address",
+                "save": "Save",
+                "time": "Time",
+                "delivery_address": "Delivery Address",
+                "amount": "Amount",
+                "payment_method": "Payment Method",
+                "show": "show",
+                "delete": "delete",
+                "contact_number": "Contact Number",
+                "payDoor": "pay at the door",
+                "payCard": "pay at the door by credit card",
+                "total": "Total",
+                "yourOrder": "Your Order",
+                "actions":"Actions",
+                "image":"Image",
+                "name":"Name",
+                "price":"Price",
+                "count":"Count",
+                "received":"Your order has been received"
+            },
+            "howWork": {
+                "work": "How it works",
+                "body": "Delivery may be extended during sale periods. Please refer to the checkout page for an updated estimate for your location. Kindly note that once you have placed an order, it is no longer possible to modify your order. Taxes and duties are included in all product prices.It is possible to place an order with shipment to a different address than your home or billing address when paying with a credit card. Please note that Klarna payments require that your order is shipped to your registered home address."
+            },
+            "about":{
+                "body":"Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."
+            }
+            
+        }
+    ],
+    "aze": [
+        {
+            "nav": {
+                "home": "Ana səhifə",
+                "restuarant": "Restoranlar",
+                "about": "Haqqımızda",
+                "works": "Necə işləyir",
+                "profile": "Profil",
+                "basket": "Səbətiniz",
+                "order": "Sifarişləriniz",
+                "checkout": "Ödəniş",
+                "faqs": "Tez-tez soruşulan suallar",
+                "sing": "Qeydiyyat",
+                "logout": "Çıxış"
+            },
+            "home": {
+                "title": "Bizim Yemək saytı yerli yeməyi tapmağı asanlaşdırır",
+                "body": "Lorem ipsum qrafik, çap və nəşriyyat sənayesində layoutları və vizual maketləri önizləmək üçün geniş istifadə olunan placeholder mətnidir.",
+                "registerBtn": "Qeydiyyatdan keç",
+                "orderBtn": "İndi sifariş et",
+                "features": "Xüsusiyyətlər",
+                "popular": "Ən Populyar Yeni Yeməklərimiz",
+                "discover": "Yaxınlıqdakı Restoranları Kəşf edin",
+                "explore": "İndi araşdır"
+            },
+            "login": {
+                "login": "Daxil ol",
+                "register": "Qeydiyyat",
+                "username": "İstifadəçi adı",
+                "password": "Şifrə",
+                "loginBtn": "Daxil ol",
+                "fullname": "Tam Ad",
+                "email": "E-poçt",
+                "registerBtn": "Qeydiyyatdan keç"
+            },
+            "restuarant": {
+                "delivery":"çatdırılma",
+                "allRestaurant": "Bütün Restoranlar",
+                "cuisine": "Mətbəx",
+                "back": "Geri dön",
+                "items": "məhsullar",
+                "checkout": "Ödəniş",
+                "products": "Məhsullar",
+                "basketEmpty":"Səbət Boşdur"
+            },
+            "user": {
+                "profile": "Profil",
+                "basket": "Səbətiniz",
+                "order": "Sifarişləriniz",
+                "checkout": "Ödəniş",
+                "logout": "Çıxış",
+                "contact": "Əlaqə",
+                "address": "Ünvan",
+                "save": "Yadda saxla",
+                "time": "Vaxt",
+                "delivery_address": "Çatdırılma ünvanı",
+                "amount": "Məbləğ",
+                "payment_method": "Ödəniş metodu",
+                "show": "göstər",
+                "delete": "sil",
+                "contact_number": "Əlaqə nömrəsi",
+                "payDoor": "qapıda ödə",
+                "payCard": "kredit kartı ilə qapıda ödə",
+                "total": "Cəmi",
+                "yourOrder": "Sifarişiniz",
+                "actions":"Əməliyyatlar",
+                "image":"Şəkil",
+                "name":"Ad",
+                "price":"Qiymət",
+                "count":"Sayı",
+                "received":"Sifarişiniz qəbul edildi"
+            },
+            "howWork": {
+                "work": "Necə işləyir",
+                "body": "Satış dövrlərində çatdırılma uzadıla bilər. Zəhmət olmasa, yeriniz üçün yenilənmiş təxmini müddəti ödəniş səhifəsində yoxlayın. Zəhmət olmasa, sifarişi verdikdən sonra onu dəyişdirmək mümkün olmadığını unutmayın. Bütün məhsul qiymətlərinə vergilər və rüsumlar daxildir. Kredit kartı ilə ödəyərkən sifarişi evinizdən və ya faktura ünvanınızdan fərqli bir ünvana çatdırmaq mümkündür. Zəhmət olmasa, Klarna ödənişlərinin sifarişinizin qeydiyyatda olan ev ünvanınıza göndərilməsini tələb etdiyini unutmayın."
+            },
+            "about":{
+                "body":"Lorem ipsum qrafik, çap və nəşriyyat sənayesində layoutları və vizual maketləri önizləmək üçün geniş istifadə olunan placeholder mətnidir. Lorem ipsum qrafik, çap və nəşriyyat sənayesində layoutları və vizual maketləri önizləmək üçün geniş istifadə olunan placeholder mətnidir. Lorem ipsum qrafik, çap və nəşriyyat sənayesində layoutları və vizual maketləri önizləmək üçün geniş istifadə olunan placeholder mətnidir."
+            }
+        }
+    ],
+    "ru": [
+        {
+            "nav": {
+                "home": "Главная",
+                "restuarant": "Рестораны",
+                "about": "О нас",
+                "works": "Как это работает",
+                "profile": "Профиль",
+                "basket": "Ваша корзина",
+                "order": "Ваши заказы",
+                "checkout": "Оформить заказ",
+                "faqs": "Часто задаваемые вопросы",
+                "sing": "Регистрация",
+                "logout": "Выйти"
+            },
+            "home": {
+                "title": "Наш сайт о еде упрощает поиск местной еды",
+                "body": "Lorem ipsum - это текст-заполнитель, широко используемый в графическом дизайне, печати и издательской деятельности для предварительного просмотра макетов и визуальных макетов.",
+                "registerBtn": "Зарегистрироваться",
+                "orderBtn": "Заказать сейчас",
+                "features": "Особенности",
+                "popular": "Наши популярные обновленные блюда",
+                "discover": "Откройте для себя рестораны рядом с вами",
+                "explore": "Исследовать сейчас"
+            },
+            "login": {
+                "login": "Войти",
+                "register": "Регистрация",
+                "username": "Имя пользователя",
+                "password": "Пароль",
+                "loginBtn": "Войти",
+                "fullname": "Полное имя",
+                "email": "Эл. почта",
+                "registerBtn": "Зарегистрироваться"
+            },
+            "restuarant": {
+                "delivery":"доставка",
+                "allRestaurant": "Все рестораны",
+                "cuisine": "Кухня",
+                "back": "Назад",
+                "items": "товары",
+                "checkout": "Оформить заказ",
+                "products": "Продукты",
+                "basketEmpty":"Корзина пуста"
+            },
+            "user": {
+                "profile": "Профиль",
+                "basket": "Ваша корзина",
+                "order": "Ваши заказы",
+                "checkout": "Оформить заказ",
+                "logout": "Выйти",
+                "contact": "Контакт",
+                "address": "Адрес",
+                "save": "Сохранить",
+                "time": "Время",
+                "delivery_address": "Адрес доставки",
+                "amount": "Сумма",
+                "payment_method": "Способ оплаты",
+                "show": "показать",
+                "delete": "удалить",
+                "contact_number": "Контактный номер",
+                "payDoor": "оплата при получении",
+                "payCard": "оплата кредитной картой при получении",
+                "total": "Итого",
+                "yourOrder": "Ваш заказ",
+                "actions":"Действия",
+                "image":"Изображение",
+                "name":"Имя",
+                "price":"Цена",
+                "count":"Количество",
+                "received":"Ваш заказ получен"
+            },
+            "howWork": {
+                "work": "Как это работает",
+                "body": "Доставка может быть увеличена в период распродаж. Пожалуйста, ознакомьтесь с обновленной оценкой для вашего местоположения на странице оформления заказа. Обратите внимание, что после размещения заказа его изменение невозможно. Налоги и пошлины включены во все цены на продукты. Возможно оформить заказ с доставкой на другой адрес, отличный от домашнего или платежного адреса, при оплате кредитной картой. Обратите внимание, что платежи Klarna требуют, чтобы ваш заказ был отправлен на зарегистрированный домашний адрес."
+            },
+            "about":{
+                "body":"Lorem ipsum - это текст-заполнитель, широко используемый в графическом дизайне, печати и издательской деятельности для предварительного просмотра макетов и визуальных макетов. Lorem ipsum - это текст-заполнитель, широко используемый в графическом дизайне, печати и издательской деятельности для предварительного просмотра макетов и визуальных макетов. Lorem ipsum - это текст-заполнитель, широко используемый в графическом дизайне, печати и издательской деятельности для предварительного просмотра макетов и визуальных макетов."
+            }
+        }
+    ]
+}

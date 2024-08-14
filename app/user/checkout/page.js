@@ -1,13 +1,15 @@
 'use client'
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import style from './checkout.module.css'
 import axios from "axios";
 import succesImg from '../image/succes.png'
 import Image from "next/image";
+import { languageContext } from "../../context/languageContext";
 export default function Checkout() {
     const [phone, setPhone] = useState('+994');
     const [selectedPayment, setSelectedPayment] = useState('cash');
     const [basket,setBasket]=useState({})
+    const [language,setLanguage]=useContext(languageContext)
     const [error, setError] = useState({
         address: '',
         contact: ''
@@ -27,7 +29,9 @@ export default function Checkout() {
     const handlePaymentChange = useCallback((e) => {
         setSelectedPayment(e.target.id);
     }, []);
+    console.log(basket.id)
     const fetchBasket = async () => {
+        
         const authorization = localStorage.getItem('access_token');
         const responseBasket = await axios.get('/api/basket', {
             headers: {
@@ -88,7 +92,7 @@ export default function Checkout() {
         } else {
             setError(errors)
         }
-    }, [selectedPayment])  
+    }, [selectedPayment,basket])  
     const deleteProduct = useCallback(async () => {
         const authorization = localStorage.getItem('access_token');
         try {
@@ -112,25 +116,25 @@ export default function Checkout() {
             <section className={style.sec}>
                 {!basket.items?.length?<div className={style.success}>
                     <Image src={succesImg} width={300} height={300}/>
-                    <p>Your order has been received</p>
+                    <p>{language[0].user.received}</p>
                 </div>
                 :<><div className={style.inpDiv}>
                     <div>
-                        <h2>Checkout</h2>
+                        <h2>{language[0].user.checkout}</h2>
                     </div>
                     <form>
                         <div className={style.addCon}>
-                            <label htmlFor='address'>Address</label>
+                            <label htmlFor='address'>{language[0].user.address}</label>
                             <input ref={address} placeholder='address' type='text' id='address' />
                             {error.address ? <p className={style.error}>{error.address}</p> : null}
                         </div>
                         <div className={style.addCon}>
-                            <label htmlFor='contact'>Contact</label>
+                            <label htmlFor='contact'>{language[0].user.contact}</label>
                             <input type='tel' ref={contact} value={phone} maxLength="13" onChange={inputChange} id="contact" />
                             {error.contact ? <p className={style.error}>{error.contact}</p> : null}
                         </div>
                         <div>
-                            <p>Payment Method</p>
+                            <p>{language[0].user.payment_method}</p>
                             <div className={style.radioGroup}>
                                 <input
                                     type="radio"
@@ -139,7 +143,7 @@ export default function Checkout() {
                                     onChange={handlePaymentChange}
                                     className={selectedPayment === 'cash' ? style.selected : ''}
                                 />
-                                <label htmlFor="cash">pay at the door</label>
+                                <label htmlFor="cash">{language[0].user.payDoor}</label>
                                 <input
                                     type="radio"
                                     id="card"
@@ -147,16 +151,16 @@ export default function Checkout() {
                                     onChange={handlePaymentChange}
                                     className={selectedPayment === 'card' ? style.selected : ''}
                                 />
-                                <label htmlFor="card">pay at the door by credit card</label>
+                                <label htmlFor="card">{language[0].user.payCard}</label>
                             </div>
                         </div>
                         <div>
-                            <button onClick={checkoutFunc}>Checkout</button>
+                            <button onClick={checkoutFunc}>{language[0].user.checkout}</button>
                         </div>
                     </form>
                 </div>
                 <div className={style.itemDiv}>
-                    <h3>Your Order</h3>
+                    <h3>{language[0].user.yourOrder}</h3>
                     <div className={style.container}>
                         {basket.items?.map(item => (
                             <>
@@ -168,7 +172,7 @@ export default function Checkout() {
                             </>
                         ))}
                         <div className={style.mainDiv}>
-                            <h4>Total</h4>
+                            <h4>{language[0].user.total}</h4>
                             <p>${basket.total_amount}</p>
                         </div>
                     </div>

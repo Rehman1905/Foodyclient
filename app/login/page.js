@@ -10,6 +10,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { userContext } from "../context/userContext";
 import { Alert } from "@mui/material";
+import { languageContext } from "../context/languageContext";
 export default function Login() {
     const [error, setError] = useState({
         username: '',
@@ -17,6 +18,7 @@ export default function Login() {
         fullname: '',
         email: ''
     })
+    const [language]=useContext(languageContext)
     const [user, setUser] = useContext(userContext)
     const router = useRouter()
     const fullname = useRef()
@@ -160,38 +162,38 @@ export default function Login() {
             </div>
             <div className={style.inpDiv}>
                 <div className={style.link}>
-                    <a onClick={login} style={{ color: logIn ? '#EB5757' : '#828282' }}>Login</a>
-                    <a onClick={register} style={{ color: logIn ? '#828282' : '#EB5757' }}>Register</a>
+                    <a onClick={login} style={{ color: logIn ? '#EB5757' : '#828282' }}>{language[0].login.login}</a>
+                    <a onClick={register} style={{ color: logIn ? '#828282' : '#EB5757' }}>{language[0].login.register}</a>
                 </div>
                 <div className={style.mainDiv}>
                     <form>
                         {!logIn ? <div>
-                            <label for='fullname'>Full Name</label>
+                            <label for='fullname'>{language[0].login.fullname}</label>
                             <input ref={fullname} placeholder="fullname" type="text" id="fullname" />
                             {error.fullname ?
                                 <p>{error.fullname}</p> : ''}
                         </div> : ''}
                         {!logIn ? <div>
-                            <label for='username'>Username</label>
+                            <label for='username'>{language[0].login.username}</label>
                             <input ref={username} type="username" id="username" placeholder="username" />
                             {error.username ?
                                 <p>{error.username}</p> : ''}
                         </div> : ''}
                         <div>
-                            <label for='email'>Email</label>
+                            <label for='email'>{language[0].login.email}</label>
                             <input ref={email} placeholder="excample@gmail.com" type="email" id="email" />
                             {error.email ?
                                 <p>{error.email}</p> : ''}
                         </div>
                         <div className={style.password}>
-                            <label for='password'>Password</label>
+                            <label for='password'>{language[0].login.password}</label>
                             <input ref={password} placeholder="password" type={inpType} id="password" />
                             <Image onClick={show} width={50} height={50} src={inpType == 'password' ? showImg : dontShowImg} alt="show" />
                             {error.password ?
                                 <p>{error.password}</p> : ''}
                         </div>
                         <div>
-                            <button onClick={sendData}>{logIn ? 'Log in' : 'Register'}</button>
+                            <button onClick={sendData}>{logIn ? `${language[0].login.loginBtn}` : `${language[0].login.registerBtn}`}</button>
                         </div>
                     </form>
                 </div>
