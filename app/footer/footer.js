@@ -5,32 +5,40 @@ import insta from '../image/insta.png'
 import twitter from '../image/twitter.png'
 import style from './footer.module.css'
 import { useEffect, useState } from 'react'
-export default function Footer(){
+export default function Footer() {
     const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+    useEffect(()=>{
+        if (window) {
+          setIsMobile(window.innerWidth <= 768);
+        };
+      },[])
+    useEffect(() => {
+        const handleResize = () => {
+            if (window) {
+                setIsMobile(window.innerWidth <= 768);
+            }
+        
 
-    handleResize();
+        handleResize();
 
-    window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-    return(
+        return () => window.removeEventListener('resize', handleResize);
+        }
+    }, []);
+    return (
         <div className={style.container}>
             <div className={style.descriptionDiv}>
                 <div className={style.foodyDiv}>
                     <h4>Foody<span>.</span></h4>
                     <p>Lorem ipsum is placeholder text commonly used in the graphic,</p>
                     <div>
-                        <Image className={style.facebook} width={60} height={60} src={facebook} alt='facebook'/>
-                        <Image className={style.insta} width={60} height={60} src={insta} alt='insta'/>
-                        <Image className={style.twitter} width={60} height={60} src={twitter} alt='twitter'/>
+                        <Image className={style.facebook} width={60} height={60} src={facebook} alt='facebook' />
+                        <Image className={style.insta} width={60} height={60} src={insta} alt='insta' />
+                        <Image className={style.twitter} width={60} height={60} src={twitter} alt='twitter' />
                     </div>
                 </div>
-                <div style={{display:isMobile?'none':'flex'}} className={style.footerData}>
+                <div style={{ display: isMobile ? 'none' : 'flex' }} className={style.footerData}>
                     <div>
                         <h5>Popular</h5>
                         <p>Programming</p>
@@ -53,7 +61,7 @@ export default function Footer(){
                 </div>
             </div>
             <div className={style.footerEnd}>
-            All rights reserved © 2005-2024 Foody TERMS OF USE | Privacy Policy
+                All rights reserved © 2005-2024 Foody TERMS OF USE | Privacy Policy
             </div>
         </div>
     )

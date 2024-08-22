@@ -17,18 +17,25 @@ export default function Basket() {
     const [basket, setBasket] = useState({})
     const [show, setShow] = useState(false)
     const [empty, setEmpty] = useState(true)
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [language]=useContext(languageContext)
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
+    const [isMobile, setIsMobile] = useState(false);
+    const [language] = useContext(languageContext)
+    useEffect(()=>{
+        if (window) {
+          setIsMobile(window.innerWidth <= 768);
         };
+      },[])
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 768);
+            };
 
-        handleResize();
+            handleResize();
 
-        window.addEventListener('resize', handleResize);
+            window.addEventListener('resize', handleResize);
 
-        return () => window.removeEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }
     }, []);
     const showBasket = useCallback(() => {
         document.body.style.overflow = 'hidden';
@@ -49,7 +56,10 @@ export default function Basket() {
     // }
     const fetchBasket = async () => {
         try {
-            let token = localStorage.getItem('access_token');
+            let token
+            if (typeof window!=='undefined') {
+                token = localStorage.getItem('access_token');
+            }
             if (!token) {
                 return;
             }
@@ -61,7 +71,6 @@ export default function Basket() {
                 });
                 setBasket(responseBasket.data.result.data);
             } catch (error) {
-                console.log(error.response.status)
                 if (error.response && error.response.status === 401) {
                     token = await refreshAccessToken();
                     if (!token) {
@@ -74,12 +83,10 @@ export default function Basket() {
                     });
                     setBasket(retryResponseBasket.data.result.data);
                 } else {
-                    console.log(error.response.status)
                     throw error;
                 }
             }
         } catch (error) {
-            console.log(error.response.status)
             console.error('Error fetching basket:', error);
         }
     }
@@ -109,7 +116,10 @@ export default function Basket() {
         }
     }, [basket])
     const addProduct = useCallback(async (id) => {
-        const authorization = localStorage.getItem('access_token');
+        let authorization
+        if(typeof window!=='undefined'){
+        authorization = localStorage.getItem('access_token');
+        }
         try {
             await axios.post('/api/basket/add', {
                 product_id: id
@@ -119,7 +129,6 @@ export default function Basket() {
                 }
             });
         } catch (error) {
-            console.log('first',error.status)
             console.error('Error adding product to basket:', error);
         }
 
@@ -127,7 +136,10 @@ export default function Basket() {
 
     }, [])
     const deleteProduct = useCallback(async () => {
-        const authorization = localStorage.getItem('access_token');
+        let authorization
+        if(typeof window!=='undefined'){
+        authorization = localStorage.getItem('access_token');
+        }
         try {
             await axios.delete('/api/basket/clear', {
                 headers: {
@@ -138,15 +150,16 @@ export default function Basket() {
                 }
             });
         } catch (error) {
-            console.log('firsttt',error.status)
-
             console.error('Error deleting product from basket:', error);
         }
         fetchBasket();
 
     }, []);
     const increaseProduct = useCallback(async (id) => {
-        const authorization = localStorage.getItem('access_token');
+        let authorization
+        if(typeof window!=='undefined'){
+            authorization = localStorage.getItem('access_token');
+        }
         try {
             await axios.delete('/api/basket/delete', {
                 headers: {
@@ -157,20 +170,19 @@ export default function Basket() {
                 }
             });
         } catch (error) {
-            console.log('firs',error.status)
 
             console.error('Error deleting product from basket:', error);
         }
         fetchBasket();
     }, []);
-    const router=useRouter()
-    const getCheckout=useCallback(()=>{
+    const router = useRouter()
+    const getCheckout = useCallback(() => {
         router.push('/user/checkout')
-    },[])
+    }, [])
     return (
         <>
             <div className={`${style.basketDiv} ${styleBas.basketDiv}`}>
-                <div ref={resBasket}  className={`${style.orderDiv} ${show ? style.orderResDiv : null} ${styleBas.orderDiv}`}>
+                <div ref={resBasket} className={`${style.orderDiv} ${show ? style.orderResDiv : null} ${styleBas.orderDiv}`}>
                     <Image onClick={exit} style={{ display: show ? 'block' : 'none' }} className={style.exit} src={exitImg} width={50} height={50} alt='exit' />
                     <div className={style.itemDiv}>
                         <Image src={empty ? empBasket : basketImg} alt='basket' width={30} height={30} />
@@ -192,7 +204,7 @@ export default function Basket() {
                                         <button onClick={() => addProduct(item.id)}>+</button>
                                         <p>{item.count}</p>
                                         <button onClick={() => increaseProduct(item.id)}>-</button>
-                                        <Image onClick={() => deleteProduct(item.id)} className={style.delete} src={deleteImg} width={30} height={30} alt='item'/>
+                                        <Image onClick={() => deleteProduct(item.id)} className={style.delete} src={deleteImg} width={30} height={30} alt='item' />
                                     </div>
                                 </div>
                                 <hr />

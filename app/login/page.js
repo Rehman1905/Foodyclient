@@ -18,7 +18,7 @@ export default function Login() {
         fullname: '',
         email: ''
     })
-    const [language]=useContext(languageContext)
+    const [language] = useContext(languageContext)
     const [user, setUser] = useContext(userContext)
     const router = useRouter()
     const fullname = useRef()
@@ -27,8 +27,8 @@ export default function Login() {
     const email = useRef()
     const [logIn, setLogIn] = useState(true)
     const [inpType, setIntType] = useState('password')
-    const [alertt,setAlertt]=useState(false)
-    const [success,setSuccess]=useState('success')
+    const [alertt, setAlertt] = useState(false)
+    const [success, setSuccess] = useState('success')
     const register = useCallback(() => {
         email.current.value = ''
         password.current.value = ''
@@ -95,36 +95,37 @@ export default function Login() {
                         email: email.current.value,
                         password: password.current.value
                     })
-                    let data={
+                    let data = {
                         username: response.data.user.username,
                         fullname: response.data.user.fullname,
                         id: response.data.user.id,
                         email: response.data.user.email
                     }
                     setUser(data)
-                    
-                    localStorage.setItem('refresh_token', response.data.user.refresh_token)
-                    localStorage.setItem('access_token', response.data.user.access_token)
-                    localStorage.setItem('user', JSON.stringify(data))
+                    if (window) {
+                        localStorage.setItem('refresh_token', response.data.user.refresh_token)
+                        localStorage.setItem('access_token', response.data.user.access_token)
+                        localStorage.setItem('user', JSON.stringify(data))
+                    }
                     setSuccess('success')
                     setAlertt(true);
                     setTimeout(() => {
                         router.push('/')
-                      setAlertt(false);
-                    }, 2000); 
-                  }catch (err) {
+                        setAlertt(false);
+                    }, 2000);
+                } catch (err) {
                     setSuccess('error')
                     setAlertt(true);
                     setTimeout(() => {
-                      setAlertt(false);
-                    }, 2000); 
+                        setAlertt(false);
+                    }, 2000);
                     console.error(err)
                 }
                 email.current.value = ''
                 password.current.value = ''
             } else {
                 try {
-                    console.log(username.current.value,fullname.current.value,email.current.value,password.current.value)
+                    console.log(username.current.value, fullname.current.value, email.current.value, password.current.value)
                     await axios.post('/api/auth/signup', {
                         username: username.current.value,
                         fullname: fullname.current.value,
@@ -136,7 +137,7 @@ export default function Login() {
                     setTimeout(() => {
                         setLogIn(true);
                         setAlertt(false);
-                    }, 2000); 
+                    }, 2000);
                     username.current.value = '';
                     password.current.value = '';
                     fullname.current.value = '';
@@ -145,8 +146,8 @@ export default function Login() {
                     setSuccess('error')
                     setAlertt(true);
                     setTimeout(() => {
-                      setAlertt(false);
-                    }, 2000); 
+                        setAlertt(false);
+                    }, 2000);
                     console.error("Error during signup:", error);
                 }
             }
@@ -198,7 +199,7 @@ export default function Login() {
                     </form>
                 </div>
             </div>
-            <Alert className={style.alert} style={{display:alertt?'block':'none'}} variant="filled" severity={success}>{success=='success'?'Succesfully':"Unsuccesfully"}</Alert>
+            <Alert className={style.alert} style={{ display: alertt ? 'block' : 'none' }} variant="filled" severity={success}>{success == 'success' ? 'Succesfully' : "Unsuccesfully"}</Alert>
         </section>
     )
 }

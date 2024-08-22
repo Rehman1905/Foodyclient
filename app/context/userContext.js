@@ -14,7 +14,10 @@ export default function UserContext({ children }) {
   });
 
   useEffect(() => {
-    const userdata = localStorage?.getItem('user');
+    let userdata
+    if (window) {
+      userdata = localStorage?.getItem('user');
+    }
     if (userdata) {
       setUser(JSON.parse(userdata));
     }

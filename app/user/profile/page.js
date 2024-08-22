@@ -9,7 +9,7 @@ import { languageContext } from '../../context/languageContext'
 
 export default function Profile() {
     const [user, setUser] = useContext(userContext)
-    const [language,setLanguage]=useContext(languageContext)
+    const [language, setLanguage] = useContext(languageContext)
     const [phone, setPhone] = useState('+994')
     const [error, setError] = useState({
         address: '',
@@ -58,7 +58,7 @@ export default function Profile() {
 
     const save = useCallback(async (e) => {
         e.preventDefault()
-        
+
         let errors = {}
         if (!email.current.value) {
             errors.email = 'The email provided is incorrect. Please try again.'
@@ -79,28 +79,29 @@ export default function Profile() {
         }
 
         if (Object.keys(errors).length === 0) {
-            const token = localStorage.getItem('access_token');
+            if (typeof window !== undefined) {
+                const token = localStorage.getItem('access_token');
 
-            try {
-                console.log('halo',addImg,'helo')
-                const res = await axios.put('/api/auth/user', {
-                    username: username.current.value,
-                    fullname: fullname.current.value,
-                    phone: contact.current.value,
-                    address: address.current.value,
-                    email: email.current.value,
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setUser(res.data.user)
-                localStorage.setItem('user', JSON.stringify(res.data.user))
-                localStorage.setItem('img', JSON.stringify(addImg))
-            } catch (error) {
-                console.error('Error updating user:', error);
+                try {
+                    const res = await axios.put('/api/auth/user', {
+                        username: username.current.value,
+                        fullname: fullname.current.value,
+                        phone: contact.current.value,
+                        address: address.current.value,
+                        email: email.current.value,
+                    }, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    setUser(res.data.user)
+                    localStorage.setItem('user', JSON.stringify(res.data.user))
+                    localStorage.setItem('img', JSON.stringify(addImg))
+
+                } catch (error) {
+                    console.error('Error updating user:', error);
+                }
             }
-
             contact.current.value = '+994'
             address.current.value = ''
             fileInputRef.current.value = ''
@@ -115,10 +116,10 @@ export default function Profile() {
         } else {
             setError(errors)
         }
-    }, [addImg, setUser])  
-    const deletImg=useCallback(()=>{
+    }, [addImg, setUser])
+    const deletImg = useCallback(() => {
         setAddImg(null)
-    },[])
+    }, [])
     return (
         <section className={style.sec}>
             <h2>{language[0].user.profile}</h2>

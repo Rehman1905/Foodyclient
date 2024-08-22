@@ -24,13 +24,20 @@ export default function Navbar() {
   const [userPage, setUserPage] = useState(false)
   const [avatarImg, setAvatarImg] = useState('')
   const [language, setLanguage] = useContext(languageContext)
+  useEffect(()=>{
+    if (window) {
+      setIsMobile(window.innerWidth <= 768);
+    };
+  },[])
   let langImg
-  if(typeof window!=='undefined'){
+  if (typeof window !== 'undefined') {
     langImg = localStorage.getItem('lang')
   }
   const [showLang, setShowLang] = useState(false)
   const changeLanguage = (data) => {
-    localStorage.setItem('lang', data)
+    if (window) {
+      localStorage.setItem('lang', data)
+    }
     if (data == 'en') {
       setLanguage(lang.en)
     } else if (data == 'aze') {
@@ -62,19 +69,24 @@ export default function Navbar() {
     }
   }, [user])
   useEffect(() => {
-    const img = localStorage.getItem('img')
+    let img
+    if (window) {
+      img = localStorage.getItem('img')
+    }
     setAvatarImg(JSON.parse(img))
   }, [user])
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+      if (window) {
+        setIsMobile(window.innerWidth <= 768);
+      };
 
-    handleResize();
+      handleResize();
 
-    window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, []);
   const burgerMenuFunc = useCallback(() => {
     setNavbar(true)
@@ -148,8 +160,10 @@ export default function Navbar() {
   }, [])
   const clickLinkLogout = useCallback(() => {
     setUserPage(false)
-    localStorage.removeItem('user')
-    localStorage.removeItem('img')
+    if (window) {
+      localStorage.removeItem('user')
+      localStorage.removeItem('img')
+    }
     setAvatar('')
     setAnimation(false)
     const timer = setTimeout(() => {
@@ -193,7 +207,7 @@ export default function Navbar() {
                 {langImg === 'ru' ? (
                   <Image onClick={() => showLanguage('ru')} src={ru} width={100} height={50} alt="language" />
                 ) : langImg === 'aze' ? (
-                <Image onClick={() => showLanguage('aze')} src={az} width={50} height={50} alt="language" />
+                  <Image onClick={() => showLanguage('aze')} src={az} width={50} height={50} alt="language" />
                 ) : (
                   <Image onClick={() => showLanguage('en')} src={en} width={50} height={50} alt="language" />
                 )}

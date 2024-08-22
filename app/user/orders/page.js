@@ -8,19 +8,22 @@ import Show from './product'
 import spinner from '../../image/spin.gif'
 import { languageContext } from "../../context/languageContext";
 export default function Orders() {
-    const [language,setLanguage]=useContext(languageContext)
+    const [language, setLanguage] = useContext(languageContext)
     const [orders, setOrders] = useState([]);
     const [showStates, setShowStates] = useState({});
-    const [spin,setSpin]=useState(true)
-    const [product,setProduct]=useState({
-        display:false,
-        data:[]
+    const [spin, setSpin] = useState(true)
+    const [product, setProduct] = useState({
+        display: false,
+        data: []
     })
     const dropdownRefs = useRef({});
-    const authorization = localStorage.getItem('access_token');
-    
+    let authorization
+    if (typeof window!=='undefined') {
+        authorization = localStorage.getItem('access_token');
+    }
+
     const fetchOrders = async () => {
-       
+
         const response = await axios.get('/api/order/user', {
             headers: {
                 Authorization: `Bearer ${authorization}`
@@ -69,23 +72,24 @@ export default function Orders() {
                 order_id: id
             }
         });
-        fetchOrders(); 
+        fetchOrders();
         setShowStates(state => ({
             ...state,
             [id]: false
-        })); 
+        }));
     }, [authorization]);
-    const showOrder=useCallback((products)=>{
-        
+    const showOrder = useCallback((products) => {
+
         setProduct({
-            display:true,
-            data:products}
+            display: true,
+            data: products
+        }
         )
     })
     return (
         <>
-        <Image width={500} height={500} className={style.spin} src={spinner} style={{display:spin?'block':'none'}}/>
-            <section style={{display:spin?'none':'flex'}} className={style.sec}>
+            <Image width={500} height={500} className={style.spin} src={spinner} style={{ display: spin ? 'block' : 'none' }} />
+            <section style={{ display: spin ? 'none' : 'flex' }} className={style.sec}>
                 <h2>{language[0].nav.order}</h2>
                 <table className={style.table}>
                     <thead>
@@ -130,7 +134,7 @@ export default function Orders() {
                     </tbody>
                 </table>
             </section>
-        <Show setProduct={setProduct} product={product}/>
+            <Show setProduct={setProduct} product={product} />
         </>
     );
 }

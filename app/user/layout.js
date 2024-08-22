@@ -13,13 +13,22 @@ export default function UserLayout({ children }) {
     const [user,setUser]=useContext(userContext)
     const [language,setLanguage]=useContext(languageContext)
     const logout=useCallback(()=>{
+        if(window){
         localStorage.removeItem('user')
         setUser({
             username:''
         })
+    }
     },[])
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(()=>{
+        if (window) {
+          setIsMobile(window.innerWidth <= 768);
+        };
+      },[])
     useEffect(() => {
+        if (typeof window !== 'undefined') { 
+            setIsMobile(window.innerWidth <= 768)
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768);
         };
@@ -29,6 +38,7 @@ export default function UserLayout({ children }) {
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
+    }
     }, []);
     return (
         <main className={style.main}>

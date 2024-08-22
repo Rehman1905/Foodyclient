@@ -21,39 +21,47 @@ export default function Product() {
     const [basket, setBasket] = useState({})
     const [empty, setEmpty] = useState(true)
     const [show, setShow] = useState(false)
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [language]=useContext(languageContext)
+    const [isMobile, setIsMobile] = useState(false);
+    const [language] = useContext(languageContext)
     const path = useParams()
     const router = useRouter()
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
+    useEffect(()=>{
+        if (window) {
+          setIsMobile(window.innerWidth <= 768);
         };
+      },[])
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setIsMobile(window.innerWidth <= 768)
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 768);
+            };
 
-        handleResize();
+            handleResize();
 
-        window.addEventListener('resize', handleResize);
+            window.addEventListener('resize', handleResize);
 
-        return () => window.removeEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }
     }, []);
     useEffect(() => {
         const fetchRestuarantData = async () => {
             setSpin(true);
-    
+
             try {
                 const response = await axios.get(`/api/restuarants/${path.product}`);
                 setRestuarant(response.data.result.data);
-                
+
                 const responseProduct = await axios.get('/api/products');
                 setProducts(responseProduct.data.result.data.filter(product => product.rest_id === path.product));
-    
-                await fetchBasket(); // fetchBasket funksiyasını await edin
-    
+
+                await fetchBasket();
+
             } catch (error) {
                 if (error.response.status === 401) {
-                    // Access token müddəti bitibsə, yeniləyin və təkrar cəhd edin
+
                     await refreshAccessToken();
-                    await fetchRestuarantData(); // Yenidən sorğunu göndərin
+                    await fetchRestuarantData();
                 } else {
                     console.error("Error fetching restaurant data:", error);
                 }
@@ -61,14 +69,17 @@ export default function Product() {
                 setSpin(false);
             }
         };
-    
+
         fetchRestuarantData();
     }, []);
     const back = useCallback(() => {
         router.push('/restaurants')
     }, [])
     const fetchBasket = async () => {
-        const authorization = localStorage.getItem('access_token');
+        let authorization
+        if (window) {
+            authorization = localStorage.getItem('access_token');
+        }
         try {
             const responseBasket = await axios.get('/api/basket', {
                 headers: {
@@ -79,15 +90,18 @@ export default function Product() {
         } catch (error) {
             if (error.response.status === 401) {
                 await refreshAccessToken();
-                await fetchBasket(); // Yenidən sorğunu göndərin
+                await fetchBasket();
             } else {
                 console.error('Error fetching basket:', error);
             }
         }
     };
-    
+
     const addProduct = useCallback(async (id) => {
-        const authorization = localStorage.getItem('access_token');
+        let authorization
+        if (window) {
+            authorization = localStorage.getItem('access_token');
+        }
         try {
             await axios.post('/api/basket/add', {
                 product_id: id
@@ -100,14 +114,17 @@ export default function Product() {
         } catch (error) {
             if (error.response.status === 401) {
                 await refreshAccessToken();
-                await addProduct(id); // Yenidən sorğunu göndərin
+                await addProduct(id); 
             } else {
                 console.error('Error adding product to basket:', error);
             }
         }
     }, []);
     const deleteProduct = useCallback(async () => {
-        const authorization = localStorage.getItem('access_token');
+        let authorization
+        if (window) {
+            authorization = localStorage.getItem('access_token');
+        }
         try {
             await axios.delete('/api/basket/clear', {
                 headers: {
@@ -121,7 +138,7 @@ export default function Product() {
         } catch (error) {
             if (error.response.status === 401) {
                 await refreshAccessToken();
-                await deleteProduct(); // Yenidən sorğunu göndərin
+                await deleteProduct();
             } else {
                 console.error('Error deleting product from basket:', error);
             }
@@ -135,7 +152,10 @@ export default function Product() {
         }
     }, [basket])
     const increaseProduct = useCallback(async (id) => {
-        const authorization = localStorage.getItem('access_token');
+        let authorization
+        if (window) {
+            authorization = localStorage.getItem('access_token');
+        }
         try {
             await axios.delete('/api/basket/delete', {
                 headers: {
@@ -149,7 +169,7 @@ export default function Product() {
         } catch (error) {
             if (error.response.status === 401) {
                 await refreshAccessToken();
-                await increaseProduct(id); // Yenidən sorğunu göndərin
+                await increaseProduct(id);
             } else {
                 console.error('Error deleting product from basket:', error);
             }
@@ -178,9 +198,10 @@ export default function Product() {
             document.removeEventListener('mousedown', handleClick);
         };
     }, []);
-    const checkout=useCallback(()=>{
+    const checkout = useCallback(() => {
         router.push('/user/checkout')
-    },[])
+    }, [])
+
     return (
         <>
             <section style={{ display: spin ? 'none' : 'block' }} className={style.basket}>
@@ -249,7 +270,7 @@ export default function Product() {
                                             <button onClick={() => addProduct(item.id)}>+</button>
                                             <p>{item.count}</p>
                                             <button onClick={() => increaseProduct(item.id)}>-</button>
-                                            <Image onClick={() => deleteProduct(item.id)} className={style.delete} src={deleteImg} width={30} height={30} alt='delete'/>
+                                            <Image onClick={() => deleteProduct(item.id)} className={style.delete} src={deleteImg} width={30} height={30} alt='delete' />
                                         </div>
                                     </div>
                                     <hr />
@@ -261,7 +282,7 @@ export default function Product() {
                         {empty ? (<p className={style.opps}>Opps!<span>{language[0].restuarant.basketEmpty} </span></p>) : null}
                         <button onClick={checkout} disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn}`}>{language[0].restuarant.checkout}<p className={style.btnP}>${basket.total_amount}</p></button>
                     </div>
-                    <button  onClick={showBasket} style={{ display: isMobile ? 'flex' : 'none' }} disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn}`}><Image src={empBasket} alt='basket' width={30} height={30} />
+                    <button onClick={showBasket} style={{ display: isMobile ? 'flex' : 'none' }} disabled={empty ? true : false} className={`${!empty ? style.activeBtn : style.deActiveBtn}`}><Image src={empBasket} alt='basket' width={30} height={30} />
                         <p style={{ color: '#BDBDBD' }}>{basket.total_item} {language[0].restuarant.items}</p>{language[0].restuarant.checkout} <p className={style.btnP}>${basket.total_amount}</p></button>
                 </div>
             </section>

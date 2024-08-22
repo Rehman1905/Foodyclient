@@ -19,22 +19,30 @@ export default function Restaurants() {
     const [totalPages, setTotalPages] = useState(1);
     const [totalRestaurants, setTotalRestaurants] = useState(0);
     const [spin, setSpin] = useState(true)
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [isMobile, setIsMobile] = useState(false);
     const [filter, setFilter] = useState(false)
     const [showRestuarants, setShowRestuarants] = useState([])
     const [language, setLanguage] = useContext(languageContext)
     const router = useRouter()
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
-            setITEMS_PER_PAGE(window.innerWidth <= 768 ? 4 : 2);
+    useEffect(()=>{
+        if (window) {
+          setIsMobile(window.innerWidth <= 768);
         };
+      },[])
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setIsMobile(window.innerWidth <= 768)
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 768);
+                setITEMS_PER_PAGE(window.innerWidth <= 768 ? 4 : 2);
+            };
 
-        handleResize();
+            handleResize();
 
-        window.addEventListener('resize', handleResize);
+            window.addEventListener('resize', handleResize);
 
-        return () => window.removeEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }
     }, []);
     const [ITEMS_PER_PAGE, setITEMS_PER_PAGE] = useState(isMobile ? 2 : 4);
 
@@ -51,8 +59,10 @@ export default function Restaurants() {
             try {
                 setSpin(true);
                 let token
-                if (localStorage.getItem('access_token')) {
-                    token = localStorage.getItem('access_token');
+                if (window) {
+                    if (localStorage.getItem('access_token')) {
+                        token = localStorage.getItem('access_token');
+                    }
                 }
                 try {
                     const res = await axios.get('/api/category', {
@@ -137,7 +147,10 @@ export default function Restaurants() {
         document.body.style.overflow = 'auto';
     }, [])
     const aboutProduct = useCallback((id) => {
-        const user = localStorage.getItem('user')
+        let user
+        if (window) {
+            user = localStorage.getItem('user')
+        }
         if (!user) {
             alert('Please register first.')
             router.push('/login')
@@ -145,6 +158,9 @@ export default function Restaurants() {
             router.push(`/restaurants/${id}`)
         }
     }, [])
+    const grayFunc = () => {
+        setFilter(false)
+    }
     return (
         <>
             <section style={{ display: spin ? 'none' : 'flex' }} className={style.sec}>
@@ -218,7 +234,7 @@ export default function Restaurants() {
                 </div>
             </section>
             <Image className={style.spin} style={{ display: spin ? 'block' : 'none' }} width={600} height={600} src={spinImg} alt='spin' />
-            <div className={style.gray} style={{ display: filter ? 'block' : 'none' }} ></div>
+            <div className={style.gray} onClick={grayFunc} style={{ display: filter ? 'block' : 'none' }} ></div>
         </>
     );
 }

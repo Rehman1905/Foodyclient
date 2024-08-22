@@ -19,7 +19,7 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { languageContext } from './context/languageContext'
 export default function Home() {
-    const [language, setLanguage] =useContext(languageContext);
+    const [language, setLanguage] = useContext(languageContext);
     // const [changeLanguag, setChangeLanguage] = useState(false);
     // useEffect(()=>{
     //     setLanguage(`${lang}.${data}`)
@@ -46,16 +46,23 @@ export default function Home() {
         fetchOffers()
     }, [])
     const [isMobile, setIsMobile] = useState(false);
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
+    useEffect(()=>{
+        if (window) {
+          setIsMobile(window.innerWidth <= 768);
         };
+      },[])
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 768);
+            };
 
-        handleResize();
+            handleResize();
 
-        window.addEventListener('resize', handleResize);
+            window.addEventListener('resize', handleResize);
 
-        return () => window.removeEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }
     }, []);
     const router = useRouter()
     const singUp = useCallback(() => {
@@ -132,7 +139,7 @@ export default function Home() {
                         </div>
                         <div className={style.offerImg}>
                             <Image className={style.leftImg} src={offer.img_url} width={350} height={350} alt='offer' />
-                            <Image width={500} height={500} src={index % 2 == 0 ? leftImg : rightImg} alt='img'/>
+                            <Image width={500} height={500} src={index % 2 == 0 ? leftImg : rightImg} alt='img' />
                         </div>
                     </div>
                 ))}

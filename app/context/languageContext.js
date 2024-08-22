@@ -7,15 +7,23 @@ export default function LanguageContext({ children }) {
     const [language, setLanguage] = useState(lang.en); 
 
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            let data = localStorage.getItem('lang');
-            if (data === 'ru') {
-                setLanguage(lang.ru);
-            } else if (data === 'aze') {
-                setLanguage(lang.aze);
-            } else {
-                setLanguage(lang.en);
+        try {
+            if (typeof window !== 'undefined' && window.localStorage) {
+                const data = localStorage.getItem('lang');
+                switch (data) {
+                    case 'ru':
+                        setLanguage(lang.ru);
+                        break;
+                    case 'aze':
+                        setLanguage(lang.aze);
+                        break;
+                    default:
+                        setLanguage(lang.en);
+                        break;
+                }
             }
+        } catch (error) {
+            console.error("Error accessing localStorage: ", error);
         }
     }, []);
 
