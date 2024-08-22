@@ -1,7 +1,7 @@
 Finally project
-admin:https://foody-admin-n1x8n77qy-rehmans-projects-c446560b.vercel.app 
-client:https://foody-client-emrvoqtie-rehmans-projects-c446560b.vercel.app admin 
-github:https://github.com/Rehman1905/FoodyAdmin client 
+admin: https://foody-admin-jlmbuiwbm-rehmans-projects-c446560b.vercel.app/
+client:https://foody-client-g3y5w2ipt-rehmans-projects-c446560b.vercel.app/
+admin github:https://github.com/Rehman1905/FoodyAdmin client 
 github:https://github.com/Rehman1905/foodyClient
 
 
