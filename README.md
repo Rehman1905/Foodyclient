@@ -1,6 +1,6 @@
 Finally project
-admin:https://foody-admin-jlmbuiwbm-rehmans-projects-c446560b.vercel.app/
-client:https://foody-client-g3y5w2ipt-rehmans-projects-c446560b.vercel.app/
+admin:https://foody-admin-gamma.vercel.app/
+client:https://foody-client-woad.vercel.app/
 admin github:https://github.com/Rehman1905/FoodyAdmin
 client github:https://github.com/Rehman1905/foodyClient
 Azerbaijani
